@@ -10,7 +10,8 @@ added_files = [
     ('images\\save.png', 'images'),
     ('images\\clear.png', 'images'),
     ('images\\delete.png', 'images'),
-    ('images\\listen.png', 'images')
+    ('images\\listen.png', 'images'),
+    ('styles\\style_gui.qss', 'styles')
     ]
 
 a = Analysis(
@@ -50,5 +51,5 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon='C:\\proj_py\\pyqt6_hl7_sender\\images\\ico.ico',
+    icon='images\\ico.ico',
 )
