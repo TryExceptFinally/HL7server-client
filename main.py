@@ -276,6 +276,11 @@ class MainWindow(QMainWindow):
             return
         self.ui.editorServerInMessage.setPlainText(inMsg)
         self.ui.editorServerOutMessage.setPlainText(outMsg)
+        msg = DataItems(self.ui.editorServerInMessage.toPlainText(),
+                        self.ui.editorServerOutMessage.toPlainText(),
+                        'test')
+        msg.setText('test')
+        self.ui.listServerHistory.addItem(msg)
 
     def serverStopListen(self):
         self.ui.statusBar.showMessage(f'Server closed', 3000)
