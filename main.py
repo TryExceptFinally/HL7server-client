@@ -317,7 +317,10 @@ server = ServerHL7('127.0.0.1', config.serverPort)
 
 app = QApplication(sys.argv)
 root = MainWindow()
-root.setStyleSheet(root.ui.stylesheet)
+
+stylesheet = "style_gui.qss"
+with open(stylesheet, 'r') as ss:
+    root.setStyleSheet(ss.read())
 root.show()
 
 sys.exit(app.exec())
