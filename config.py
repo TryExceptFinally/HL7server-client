@@ -4,7 +4,6 @@ import configparser
 class Config:
 
     def __init__(self, ini: str):
-        
         self.ini = ini
         self.config = configparser.ConfigParser()
         self.clientIP: str = '127.0.0.1'
