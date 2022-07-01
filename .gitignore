@@ -1,13 +1,2 @@
-build/HL7/Analysis-00.toc
-build/HL7/base_library.zip
-build/HL7/EXE-00.toc
-build/HL7/HL7.exe.manifest
-build/HL7/HL7.pkg
-build/HL7/PKG-00.toc
-build/HL7/PYZ-00.pyz
-build/HL7/PYZ-00.toc
-build/HL7/Tree-00.toc
-build/HL7/Tree-01.toc
-build/HL7/Tree-02.toc
-build/HL7/warn-HL7.txt
-build/HL7/xref-HL7.html
+build/*
+__pycache__/*
