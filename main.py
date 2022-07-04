@@ -1,7 +1,7 @@
 import sys, os.path
 
 from gui import Ui_MainWindow
-from PyQt6.QtGui import QIcon
+from PyQt6.QtGui import QIcon, QTextOption
 from PyQt6.QtWidgets import QApplication, QMainWindow, QFileDialog, QListWidgetItem
 from PyQt6.QtCore import QThread, pyqtSignal, QObject
 
@@ -79,6 +79,7 @@ class MainWindow(QMainWindow):
         self.ui.actionShowHideHistory.triggered.connect(
             lambda: self.ui.clientDockWidget.setHidden(
                 not self.ui.clientDockWidget.isHidden()))
+        self.ui.actionWrapMode.triggered.connect(lambda: self.wrapModeChanged())
         self.ui.actionSaveConfig.triggered.connect(lambda: self.configSave())
         self.ui.actionHelpAbout.triggered.connect(lambda: self.msgAbout())
 
@@ -115,6 +116,13 @@ class MainWindow(QMainWindow):
             self.ui.buttonClientHistoryClear.setEnabled(True)
         else:
             self.ui.buttonClientHistoryClear.setEnabled(False)
+
+    #Wrap Mode Changed
+    def wrapModeChanged(self):
+        if self.ui.editorClientOutMessage.wordWrapMode() == QTextOption.WrapMode.NoWrap:
+            self.ui.editorClientOutMessage.setWordWrapMode(QTextOption.WrapMode.WrapAtWordBoundaryOrAnywhere)
+        else:
+            self.ui.editorClientOutMessage.setWordWrapMode(QTextOption.WrapMode.NoWrap)
 
     #textChanged
     def textChanged(self):
@@ -265,21 +273,20 @@ class MainWindow(QMainWindow):
 
     def serverStartListen(self):
         while server.run:
-            server.listen()
-            self.serverThreadListen.signals.result.emit(
-                server.inMsg, server.outMsg)
+            timeMsg, result = server.listen()
+            self.serverThreadListen.signals.result.emit(timeMsg, result)
 
-    def serverResultListen(self, inMsg: str, outMsg: str):
-        if not inMsg:
+    def serverResultListen(self, timeMsg: str, result: str):
+        if not server.inMsg:
             self.ui.statusBar.showMessage(
                 f'Empty message received from client', 3000)
             return
-        self.ui.editorServerInMessage.setPlainText(inMsg)
-        self.ui.editorServerOutMessage.setPlainText(outMsg)
+        self.ui.editorServerInMessage.setPlainText(server.inMsg)
+        self.ui.editorServerOutMessage.setPlainText(server.outMsg)
+        text = f'[{timeMsg}]: From {result}'
         msg = DataItems(self.ui.editorServerInMessage.toPlainText(),
-                        self.ui.editorServerOutMessage.toPlainText(),
-                        'test')
-        msg.setText('test')
+                        self.ui.editorServerOutMessage.toPlainText(), result)
+        msg.setText(text)
         self.ui.listServerHistory.addItem(msg)
 
     def serverStopListen(self):

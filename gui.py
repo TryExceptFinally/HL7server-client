@@ -5,6 +5,7 @@ from PyQt6.QtWidgets import (QVBoxLayout, QPlainTextEdit, QPushButton, QLabel,
                              QCheckBox, QListWidget, QStatusBar, QDockWidget,
                              QMenu, QMenuBar, QWidgetAction, QMessageBox)
 
+
 class Ui_MainWindow:
 
     def setupUi(self, root):
@@ -34,7 +35,7 @@ class Ui_MainWindow:
         #Menu
         self.menuFile = QMenu('File', self.menuBar)
         self.menuHistory = QMenu('History', self.menuBar)
-        self.menuConfig = QMenu('Config', self.menuBar)
+        self.menuSettings = QMenu('Settings', self.menuBar)
         self.menuHelp = QMenu('Help', self.menuBar)
 
         #Action Menu
@@ -46,19 +47,23 @@ class Ui_MainWindow:
         self.actionShowHideHistory.setText('Show/Hide')
         #Config
         self.actionSaveConfig = QWidgetAction(self.menuBar)
-        self.actionSaveConfig.setText('Save')
+        self.actionSaveConfig.setText('Save Config')
+        #WrapMode
+        self.actionWrapMode = QWidgetAction(self.menuBar)
+        self.actionWrapMode.setText('Change WrapMode')
         #Help
         self.actionHelpAbout = QWidgetAction(self.menuBar)
         self.actionHelpAbout.setText('About')
 
         self.menuFile.addAction(self.actionExitApp)
         self.menuHistory.addAction(self.actionShowHideHistory)
-        self.menuConfig.addAction(self.actionSaveConfig)
+        self.menuSettings.addAction(self.actionSaveConfig)
+        self.menuSettings.addAction(self.actionWrapMode)
         self.menuHelp.addAction(self.actionHelpAbout)
 
         self.menuBar.addMenu(self.menuFile)
         self.menuBar.addMenu(self.menuHistory)
-        self.menuBar.addMenu(self.menuConfig)
+        self.menuBar.addMenu(self.menuSettings)
         self.menuBar.addMenu(self.menuHelp)
 
         #Status Bar

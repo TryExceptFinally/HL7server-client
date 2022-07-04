@@ -48,6 +48,7 @@ class ServerHL7(TcpSocket):
     def listen(self):
         print('[SERVER]: Start listen')
         inputs = [self.sock]
+        #self.sock.getpeername()
         outputs = []
         while inputs:
             rlist, wlist, xlist = select.select(inputs, outputs, inputs)
@@ -76,13 +77,14 @@ class ServerHL7(TcpSocket):
                     outputs.append(sock)
 
             for sock in wlist:
-                print('[SERVER]: Write!', sock)
-                date = datetime.now().strftime('%Y%m%d%H%M%S')
-                self.outMsg = fnc.genAnswerMessage(self.inMsg, self.code, date)
+                sockpeer = sock.getpeername()
+                print(f'[SERVER]: Write! {sock}')
+                date = datetime.now()
+                self.outMsg = fnc.genAnswerMessage(self.inMsg, self.code, date.strftime('%Y%m%d%H%M%S'))
                 self.write(sock, fnc.convertMessage(self.outMsg, self.code))
                 self.close(sock)
                 outputs.remove(sock)
-                return
+                return f"{date.strftime('%H:%M:%S')}", f'{sockpeer[0]}:{sockpeer[1]}'
 
             for sock in xlist:
                 print('[SERVER]: Exception!!!')
@@ -90,4 +92,4 @@ class ServerHL7(TcpSocket):
                 if sock in outputs:
                     outputs.remove(sock)
                 self.close(sock)
-                return
+                return f'[ERROR]', ''
