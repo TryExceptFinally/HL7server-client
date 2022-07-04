@@ -18,33 +18,52 @@ class Config:
         self.loadDir: str = './'
         self.saveDir: str = './message.hl7'
 
+    def getstring(self, section, option, fallback):
+        string = self.config.get(section, option, fallback=fallback)
+        if string:
+            return string
+        else:
+            return fallback
+
+    def getint(self, section, option, fallback):
+        try:
+            return self.config.getint(section, option, fallback=fallback)
+        except ValueError:
+            return fallback
+
+    def getboolean(self, section, option, fallback):
+        try:
+            return self.config.getboolean(section, option, fallback=fallback)
+        except ValueError:
+            return fallback
+
     def load(self):
         self.config.read(self.ini)
-        self.clientIP = self.config.get('Client', 'ip', fallback=self.clientIP)
-        self.clientPort = self.config.getint('Client',
-                                             'port',
-                                             fallback=self.clientPort)
-        self.clientTimeOut = self.config.getint('Client',
-                                                'timeout',
-                                                fallback=self.clientTimeOut)
-        self.clientSpam = self.config.getboolean('Client',
-                                                 'spam',
-                                                 fallback=self.clientSpam)
-        self.clientCountSpam = self.config.getint(
-            'Client', 'count_spam', fallback=self.clientCountSpam)
-        self.clientRandom = self.config.getboolean('Client',
-                                                   'random',
-                                                   fallback=self.clientRandom)
-        self.clientAN = self.config.getboolean('Client',
-                                               'an',
-                                               fallback=self.clientAN)
-        self.clientHistory = self.config.getboolean(
-            'Client', 'history_hidden', fallback=self.clientHistory)
-        self.serverPort = self.config.getint('Server',
-                                             'port',
-                                             fallback=self.serverPort)
-        self.loadDir = self.config.get('Paths', 'load', fallback=self.loadDir)
-        self.saveDir = self.config.get('Paths', 'save', fallback=self.saveDir)
+        self.clientIP = self.getstring('Client', 'ip', fallback=self.clientIP)
+        self.clientPort = self.getint('Client',
+                                      'port',
+                                      fallback=self.clientPort)
+        self.clientTimeOut = self.getint('Client',
+                                         'timeout',
+                                         fallback=self.clientTimeOut)
+        self.clientSpam = self.getboolean('Client',
+                                          'spam',
+                                          fallback=self.clientSpam)
+        self.clientCountSpam = self.getint('Client',
+                                           'count_spam',
+                                           fallback=self.clientCountSpam)
+        self.clientRandom = self.getboolean('Client',
+                                            'random',
+                                            fallback=self.clientRandom)
+        self.clientAN = self.getboolean('Client', 'an', fallback=self.clientAN)
+        self.clientHistory = self.getboolean('Client',
+                                             'history_hidden',
+                                             fallback=self.clientHistory)
+        self.serverPort = self.getint('Server',
+                                      'port',
+                                      fallback=self.serverPort)
+        self.loadDir = self.getstring('Paths', 'load', fallback=self.loadDir)
+        self.saveDir = self.getstring('Paths', 'save', fallback=self.saveDir)
 
     def save(self):
         self.config['Client'] = {

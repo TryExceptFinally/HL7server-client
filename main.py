@@ -79,7 +79,10 @@ class MainWindow(QMainWindow):
         self.ui.actionShowHideHistory.triggered.connect(
             lambda: self.ui.clientDockWidget.setHidden(
                 not self.ui.clientDockWidget.isHidden()))
+        self.ui.actionShowHideHistory.setChecked(not self.ui.clientDockWidget.isHidden())
         self.ui.actionWrapMode.triggered.connect(lambda: self.wrapModeChanged())
+        self.ui.actionWrapMode.setChecked(True)
+        
         self.ui.actionSaveConfig.triggered.connect(lambda: self.configSave())
         self.ui.actionHelpAbout.triggered.connect(lambda: self.msgAbout())
 

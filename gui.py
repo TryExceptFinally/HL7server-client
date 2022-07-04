@@ -44,13 +44,15 @@ class Ui_MainWindow:
         self.actionExitApp.setText('Exit')
         #History
         self.actionShowHideHistory = QWidgetAction(self.menuBar)
-        self.actionShowHideHistory.setText('Show/Hide')
+        self.actionShowHideHistory.setText('Show')
+        self.actionShowHideHistory.setCheckable(True)
         #Config
         self.actionSaveConfig = QWidgetAction(self.menuBar)
         self.actionSaveConfig.setText('Save Config')
         #WrapMode
         self.actionWrapMode = QWidgetAction(self.menuBar)
-        self.actionWrapMode.setText('Change WrapMode')
+        self.actionWrapMode.setText('WrapMode')
+        self.actionWrapMode.setCheckable(True)
         #Help
         self.actionHelpAbout = QWidgetAction(self.menuBar)
         self.actionHelpAbout.setText('About')
