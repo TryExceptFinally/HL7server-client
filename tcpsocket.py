@@ -69,12 +69,10 @@ class TcpSocket:
 
     @staticmethod
     def close(sock):
-        # noinspection PyBroadException
         try:
             sock.shutdown(socket.SHUT_RDWR)
         except:
             pass
-        # noinspection PyBroadException
         try:
             sock.close()
         except:

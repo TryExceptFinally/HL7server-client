@@ -69,7 +69,9 @@ class Config:
                                              fallback=self.serverHistory)
         self.loadDir = self.getstring('Paths', 'load', fallback=self.loadDir)
         self.saveDir = self.getstring('Paths', 'save', fallback=self.saveDir)
-        self.wrapMode = self.getboolean('Settings', 'wrapmode', fallback=self.wrapMode)
+        self.wrapMode = self.getboolean('Settings',
+                                        'wrapmode',
+                                        fallback=self.wrapMode)
 
     def save(self):
         self.config['Client'] = {

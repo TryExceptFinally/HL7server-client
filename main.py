@@ -1,4 +1,5 @@
-import sys, os.path
+import sys
+import os.path
 
 from gui import Ui_MainWindow
 from PyQt6.QtGui import QIcon, QTextOption
@@ -23,7 +24,7 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
-        # images
+        #  images
         self.setWindowIcon(QIcon(resource_path('ico.ico')))
         self.ui.buttonClientSend.setIcon(
             QIcon(resource_path('images\\send.png')))
@@ -40,7 +41,7 @@ class MainWindow(QMainWindow):
         self.ui.buttonServerListen.setIcon(
             QIcon(resource_path('images\\listen.png')))
 
-        # settings
+        #  settings
         self.ui.inputClientIP.setText(client.host)
         self.ui.inputClientPort.setText(str(client.port))
         self.ui.inputClientTimeout.setText(str(client.timeout))
@@ -54,7 +55,7 @@ class MainWindow(QMainWindow):
         self.ui.editorServerInMessage.setReadOnly(True)
         self.ui.editorServerOutMessage.setReadOnly(True)
 
-        #Config
+        # Config
         self.ui.checkClientSpam.setChecked(config.clientSpam)
         self.ui.checkClientRandom.setChecked(config.clientRandom)
         self.ui.checkClientAccNumber.setChecked(config.clientAN)
@@ -85,7 +86,7 @@ class MainWindow(QMainWindow):
                 not self.ui.clientDockWidget.isHidden()))
         self.ui.actionClientShowHistory.setChecked(
             not self.ui.clientDockWidget.isHidden())
-        
+
         self.ui.actionServerShowHistory.triggered.connect(
             lambda: self.ui.serverDockWidget.setHidden(
                 not self.ui.serverDockWidget.isHidden()))
@@ -116,7 +117,7 @@ class MainWindow(QMainWindow):
             self.clientHistoryChanged)
         self.ui.listClientHistory.model().rowsRemoved.connect(
             self.clientHistoryChanged)
-        
+
         self.ui.listServerHistory.keyPressEvent = self.serverDeleteItem
         self.ui.listServerHistory.itemClicked.connect(self.serverItemMessages)
         self.ui.listServerHistory.model().rowsInserted.connect(
@@ -124,17 +125,17 @@ class MainWindow(QMainWindow):
         self.ui.listServerHistory.model().rowsRemoved.connect(
             self.serverHistoryChanged)
 
-    #Root Events
+    # Root Events
     def closeEvent(self, event):
         self.configSave()
 
-    #messagebox
+    # messagebox
     def msgAbout(self):
         self.ui.msgBox.setText('HL7 client and server')
         self.ui.msgBox.setWindowTitle('LINS')
         self.ui.msgBox.exec()
 
-    #historyChanged
+    # historyChanged
     def clientHistoryChanged(self):
         if self.ui.listClientHistory.count():
             self.ui.buttonClientHistoryClear.setEnabled(True)
@@ -147,7 +148,7 @@ class MainWindow(QMainWindow):
         else:
             self.ui.buttonServerHistoryClear.setEnabled(False)
 
-    #Wrap Mode Changed
+    # Wrap Mode Changed
     def wrapModeChanged(self):
         if self.ui.actionWrapMode.isChecked():
             wrapMode = QTextOption.WrapMode.WrapAtWordBoundaryOrAnywhere
@@ -156,13 +157,13 @@ class MainWindow(QMainWindow):
 
         self.ui.editorClientOutMessage.setWordWrapMode(wrapMode)
         self.ui.editorClientInMessage.setWordWrapMode(wrapMode)
-        
+
         self.ui.editorServerOutMessage.setWordWrapMode(wrapMode)
         self.ui.editorServerInMessage.setWordWrapMode(wrapMode)
-        
+
         config.wrapMode = self.ui.actionWrapMode.isChecked()
 
-    #textChanged
+    # textChanged
     def textChanged(self):
         if not self.ui.editorClientOutMessage.toPlainText():
             self.ui.buttonClientSend.setEnabled(False)
@@ -171,7 +172,7 @@ class MainWindow(QMainWindow):
             self.ui.buttonClientSend.setEnabled(True)
             self.ui.buttonClientSave.setEnabled(True)
 
-    #GUI Functions
+    # GUI Functions
     def clientItemMessages(self, data):
         self.ui.editorClientInMessage.setPlainText(data.inMsg)
         self.ui.editorClientOutMessage.setPlainText(data.outMsg)
@@ -180,7 +181,7 @@ class MainWindow(QMainWindow):
     def serverItemMessages(self, data):
         self.ui.editorServerInMessage.setPlainText(data.inMsg)
         self.ui.editorServerOutMessage.setPlainText(data.outMsg)
-        #self.ui.labelClientSendInfo.setText(data.sendInfo)
+        # self.ui.labelClientSendInfo.setText(data.sendInfo)
 
     def clientClearItems(self):
         self.ui.listClientHistory.clear()
@@ -199,7 +200,7 @@ class MainWindow(QMainWindow):
             return
         self.ui.listClientHistory.takeItem(
             self.ui.listClientHistory.currentRow())
-        
+
     def serverDeleteItem(self, event):
         if event.key() != 16777223:
             return
@@ -297,7 +298,7 @@ class MainWindow(QMainWindow):
     def clientResultSending(self, timeMsg: str, result: str):
         if not client.inMsg:
             print('[CLIENT]: Empty response received from server')
-            #self.ui.statusBar.showMessage('Empty response received from server', 3000)
+            # self.ui.statusBar.showMessage('Empty response received from server', 3000)
         self.ui.editorClientInMessage.setPlainText(client.inMsg)
         self.ui.editorClientOutMessage.setPlainText(client.outMsg)
         self.ui.labelClientSendInfo.setText(result)
@@ -335,8 +336,8 @@ class MainWindow(QMainWindow):
 
     def serverResultListen(self, timeMsg: str, result: str):
         if not server.inMsg:
-            self.ui.statusBar.showMessage(
-                f'Empty message received from client', 3000)
+            self.ui.statusBar.showMessage('Empty message received from client',
+                                          3000)
             return
         self.ui.editorServerInMessage.setPlainText(server.inMsg)
         self.ui.editorServerOutMessage.setPlainText(server.outMsg)
@@ -347,7 +348,7 @@ class MainWindow(QMainWindow):
         self.ui.listServerHistory.addItem(msg)
 
     def serverStopListen(self):
-        self.ui.statusBar.showMessage(f'Server closed', 3000)
+        self.ui.statusBar.showMessage('Server closed', 3000)
         self.ui.buttonServerListen.setText('START SERVER')
         self.ui.editorServerOutMessage.setReadOnly(False)
 
