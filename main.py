@@ -155,6 +155,10 @@ class MainWindow(QMainWindow):
             wrapMode = QTextOption.WrapMode.NoWrap
 
         self.ui.editorClientOutMessage.setWordWrapMode(wrapMode)
+        self.ui.editorClientInMessage.setWordWrapMode(wrapMode)
+        
+        self.ui.editorServerOutMessage.setWordWrapMode(wrapMode)
+        self.ui.editorServerInMessage.setWordWrapMode(wrapMode)
         
         config.wrapMode = self.ui.actionWrapMode.isChecked()
 
