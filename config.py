@@ -15,8 +15,10 @@ class Config:
         self.clientAN: bool = False
         self.clientHistory: bool = False
         self.serverPort: int = 6005
+        self.serverHistory: bool = False
         self.loadDir: str = './'
         self.saveDir: str = './message.hl7'
+        self.wrapMode: bool = True
 
     def getstring(self, section, option, fallback):
         string = self.config.get(section, option, fallback=fallback)
@@ -62,8 +64,12 @@ class Config:
         self.serverPort = self.getint('Server',
                                       'port',
                                       fallback=self.serverPort)
+        self.serverHistory = self.getboolean('Server',
+                                             'history_hidden',
+                                             fallback=self.serverHistory)
         self.loadDir = self.getstring('Paths', 'load', fallback=self.loadDir)
         self.saveDir = self.getstring('Paths', 'save', fallback=self.saveDir)
+        self.wrapMode = self.getboolean('Settings', 'wrapmode', fallback=self.wrapMode)
 
     def save(self):
         self.config['Client'] = {
@@ -76,8 +82,12 @@ class Config:
             'an': self.clientAN,
             'history_hidden': self.clientHistory
         }
-        self.config['Server'] = {'port': self.serverPort}
+        self.config['Server'] = {
+            'port': self.serverPort,
+            'history_hidden': self.serverHistory
+        }
         self.config['Paths'] = {'load': self.loadDir, 'save': self.saveDir}
+        self.config['Settings'] = {'wrapmode': self.wrapMode}
         with open(self.ini, 'w') as configfile:
             try:
                 self.config.write(configfile)

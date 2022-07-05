@@ -43,9 +43,13 @@ class Ui_MainWindow:
         self.actionExitApp = QWidgetAction(self.menuBar)
         self.actionExitApp.setText('Exit')
         #History
-        self.actionShowHideHistory = QWidgetAction(self.menuBar)
-        self.actionShowHideHistory.setText('Show')
-        self.actionShowHideHistory.setCheckable(True)
+        self.actionClientShowHistory = QWidgetAction(self.menuBar)
+        self.actionClientShowHistory.setText('Show(Client)')
+        self.actionClientShowHistory.setCheckable(True)
+        
+        self.actionServerShowHistory = QWidgetAction(self.menuBar)
+        self.actionServerShowHistory.setText('Show(Server)')
+        self.actionServerShowHistory.setCheckable(True)
         #Config
         self.actionSaveConfig = QWidgetAction(self.menuBar)
         self.actionSaveConfig.setText('Save Config')
@@ -58,7 +62,8 @@ class Ui_MainWindow:
         self.actionHelpAbout.setText('About')
 
         self.menuFile.addAction(self.actionExitApp)
-        self.menuHistory.addAction(self.actionShowHideHistory)
+        self.menuHistory.addAction(self.actionClientShowHistory)
+        self.menuHistory.addAction(self.actionServerShowHistory)
         self.menuSettings.addAction(self.actionSaveConfig)
         self.menuSettings.addAction(self.actionWrapMode)
         self.menuHelp.addAction(self.actionHelpAbout)
@@ -173,13 +178,13 @@ class Ui_MainWindow:
                                             self.tabClient)
         self.clientDockWidget.setWidget(self.clientHistoryWidget)
         self.clientDockWidget.setFeatures(
-            QDockWidget.DockWidgetFeature.DockWidgetClosable)
+            QDockWidget.DockWidgetFeature.NoDockWidgetFeatures)
 
         self.serverDockWidget = QDockWidget('Received messages history',
                                             self.tabServer)
         self.serverDockWidget.setWidget(self.serverHistoryWidget)
         self.serverDockWidget.setFeatures(
-            QDockWidget.DockWidgetFeature.DockWidgetClosable)
+            QDockWidget.DockWidgetFeature.NoDockWidgetFeatures)
 
         #Layout addWidgets
         self.centralLayout.addWidget(self.tabWidget)

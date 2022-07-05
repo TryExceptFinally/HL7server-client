@@ -63,6 +63,7 @@ class MainWindow(QMainWindow):
         self.saveDir = config.saveDir
 
         self.ui.clientDockWidget.setHidden(config.clientHistory)
+        self.ui.serverDockWidget.setHidden(config.serverHistory)
 
         self.ui.editorClientOutMessage.textChanged.connect(self.textChanged)
 
@@ -73,16 +74,29 @@ class MainWindow(QMainWindow):
             lambda: self.clientSendMessage())
         self.ui.buttonClientHistoryClear.clicked.connect(
             lambda: self.clientClearItems())
+        self.ui.buttonServerHistoryClear.clicked.connect(
+            lambda: self.serverClearItems())
         self.ui.buttonServerListen.clicked.connect(lambda: self.serverStart())
 
         self.ui.actionExitApp.triggered.connect(lambda: self.close())
-        self.ui.actionShowHideHistory.triggered.connect(
+
+        self.ui.actionClientShowHistory.triggered.connect(
             lambda: self.ui.clientDockWidget.setHidden(
                 not self.ui.clientDockWidget.isHidden()))
-        self.ui.actionShowHideHistory.setChecked(not self.ui.clientDockWidget.isHidden())
-        self.ui.actionWrapMode.triggered.connect(lambda: self.wrapModeChanged())
-        self.ui.actionWrapMode.setChecked(True)
+        self.ui.actionClientShowHistory.setChecked(
+            not self.ui.clientDockWidget.isHidden())
         
+        self.ui.actionServerShowHistory.triggered.connect(
+            lambda: self.ui.serverDockWidget.setHidden(
+                not self.ui.serverDockWidget.isHidden()))
+        self.ui.actionServerShowHistory.setChecked(
+            not self.ui.serverDockWidget.isHidden())
+
+        self.ui.actionWrapMode.triggered.connect(
+            lambda: self.wrapModeChanged())
+        self.ui.actionWrapMode.setChecked(config.wrapMode)
+        self.wrapModeChanged()
+
         self.ui.actionSaveConfig.triggered.connect(lambda: self.configSave())
         self.ui.actionHelpAbout.triggered.connect(lambda: self.msgAbout())
 
@@ -99,9 +113,16 @@ class MainWindow(QMainWindow):
         self.ui.listClientHistory.keyPressEvent = self.clientDeleteItem
         self.ui.listClientHistory.itemClicked.connect(self.clientItemMessages)
         self.ui.listClientHistory.model().rowsInserted.connect(
-            self.historyChanged)
+            self.clientHistoryChanged)
         self.ui.listClientHistory.model().rowsRemoved.connect(
-            self.historyChanged)
+            self.clientHistoryChanged)
+        
+        self.ui.listServerHistory.keyPressEvent = self.serverDeleteItem
+        self.ui.listServerHistory.itemClicked.connect(self.serverItemMessages)
+        self.ui.listServerHistory.model().rowsInserted.connect(
+            self.serverHistoryChanged)
+        self.ui.listServerHistory.model().rowsRemoved.connect(
+            self.serverHistoryChanged)
 
     #Root Events
     def closeEvent(self, event):
@@ -114,18 +135,28 @@ class MainWindow(QMainWindow):
         self.ui.msgBox.exec()
 
     #historyChanged
-    def historyChanged(self):
+    def clientHistoryChanged(self):
         if self.ui.listClientHistory.count():
             self.ui.buttonClientHistoryClear.setEnabled(True)
         else:
             self.ui.buttonClientHistoryClear.setEnabled(False)
 
+    def serverHistoryChanged(self):
+        if self.ui.listServerHistory.count():
+            self.ui.buttonServerHistoryClear.setEnabled(True)
+        else:
+            self.ui.buttonServerHistoryClear.setEnabled(False)
+
     #Wrap Mode Changed
     def wrapModeChanged(self):
-        if self.ui.editorClientOutMessage.wordWrapMode() == QTextOption.WrapMode.NoWrap:
-            self.ui.editorClientOutMessage.setWordWrapMode(QTextOption.WrapMode.WrapAtWordBoundaryOrAnywhere)
+        if self.ui.actionWrapMode.isChecked():
+            wrapMode = QTextOption.WrapMode.WrapAtWordBoundaryOrAnywhere
         else:
-            self.ui.editorClientOutMessage.setWordWrapMode(QTextOption.WrapMode.NoWrap)
+            wrapMode = QTextOption.WrapMode.NoWrap
+
+        self.ui.editorClientOutMessage.setWordWrapMode(wrapMode)
+        
+        config.wrapMode = self.ui.actionWrapMode.isChecked()
 
     #textChanged
     def textChanged(self):
@@ -137,6 +168,42 @@ class MainWindow(QMainWindow):
             self.ui.buttonClientSave.setEnabled(True)
 
     #GUI Functions
+    def clientItemMessages(self, data):
+        self.ui.editorClientInMessage.setPlainText(data.inMsg)
+        self.ui.editorClientOutMessage.setPlainText(data.outMsg)
+        self.ui.labelClientSendInfo.setText(data.sendInfo)
+
+    def serverItemMessages(self, data):
+        self.ui.editorServerInMessage.setPlainText(data.inMsg)
+        self.ui.editorServerOutMessage.setPlainText(data.outMsg)
+        #self.ui.labelClientSendInfo.setText(data.sendInfo)
+
+    def clientClearItems(self):
+        self.ui.listClientHistory.clear()
+        self.ui.buttonClientHistoryClear.setEnabled(False)
+        self.ui.statusBar.showMessage('Clear client history', 5000)
+
+    def serverClearItems(self):
+        self.ui.listServerHistory.clear()
+        self.ui.buttonServerHistoryClear.setEnabled(False)
+        self.ui.statusBar.showMessage('Clear server history', 5000)
+
+    def clientDeleteItem(self, event):
+        if event.key() != 16777223:
+            return
+        if self.ui.listClientHistory.currentRow() < 0:
+            return
+        self.ui.listClientHistory.takeItem(
+            self.ui.listClientHistory.currentRow())
+        
+    def serverDeleteItem(self, event):
+        if event.key() != 16777223:
+            return
+        if self.ui.listServerHistory.currentRow() < 0:
+            return
+        self.ui.listServerHistory.takeItem(
+            self.ui.listServerHistory.currentRow())
+
     def configSave(self):
         config.clientIP = self.ui.inputClientIP.text()
         config.clientPort = self.ui.inputClientPort.text()
@@ -147,6 +214,7 @@ class MainWindow(QMainWindow):
         config.clientAN = self.ui.checkClientAccNumber.isChecked()
         config.clientHistory = self.ui.clientDockWidget.isHidden()
         config.serverPort = self.ui.inputServerPort.text()
+        config.serverHistory = self.ui.serverDockWidget.isHidden()
         config.loadDir = self.loadDir
         config.saveDir = self.saveDir
         config.save()
@@ -181,24 +249,6 @@ class MainWindow(QMainWindow):
                 f.write(data)
         except Exception as exp:
             print(exp)
-
-    def clientItemMessages(self, data):
-        self.ui.editorClientInMessage.setPlainText(data.inMsg)
-        self.ui.editorClientOutMessage.setPlainText(data.outMsg)
-        self.ui.labelClientSendInfo.setText(data.sendInfo)
-
-    def clientClearItems(self):
-        self.ui.listClientHistory.clear()
-        self.ui.buttonClientHistoryClear.setEnabled(False)
-        self.ui.statusBar.showMessage('Clear client history', 5000)
-
-    def clientDeleteItem(self, event):
-        if event.key() != 16777223:
-            return
-        if self.ui.listClientHistory.currentRow() < 0:
-            return
-        self.ui.listClientHistory.takeItem(
-            self.ui.listClientHistory.currentRow())
 
     def clientClear(self):
         self.ui.editorClientInMessage.setPlainText('')
