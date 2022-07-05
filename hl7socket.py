@@ -92,4 +92,4 @@ class ServerHL7(TcpSocket):
                 if sock in outputs:
                     outputs.remove(sock)
                 self.close(sock)
-                return f'[ERROR]', ''
+                return '[ERROR]', ''
