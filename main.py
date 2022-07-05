@@ -73,10 +73,7 @@ class MainWindow(QMainWindow):
         self.ui.buttonClientClear.clicked.connect(lambda: self.clientClear())
         self.ui.buttonClientSend.clicked.connect(
             lambda: self.clientSendMessage())
-        self.ui.buttonClientHistoryClear.clicked.connect(
-            lambda: self.clientClearItems())
-        self.ui.buttonServerHistoryClear.clicked.connect(
-            lambda: self.serverClearItems())
+
         self.ui.buttonServerListen.clicked.connect(lambda: self.serverStart())
 
         self.ui.actionExitApp.triggered.connect(lambda: self.close())
@@ -114,16 +111,27 @@ class MainWindow(QMainWindow):
         self.ui.listClientHistory.keyPressEvent = self.clientDeleteItem
         self.ui.listClientHistory.itemClicked.connect(self.clientItemMessages)
         self.ui.listClientHistory.model().rowsInserted.connect(
-            self.clientHistoryChanged)
+            lambda: self.historyChanged(self.ui.listClientHistory, self.ui.
+                                        buttonClientHistoryClear))
         self.ui.listClientHistory.model().rowsRemoved.connect(
-            self.clientHistoryChanged)
+            lambda: self.historyChanged(self.ui.listClientHistory, self.ui.
+                                        buttonClientHistoryClear))
 
         self.ui.listServerHistory.keyPressEvent = self.serverDeleteItem
         self.ui.listServerHistory.itemClicked.connect(self.serverItemMessages)
         self.ui.listServerHistory.model().rowsInserted.connect(
-            self.serverHistoryChanged)
+            lambda: self.historyChanged(self.ui.listServerHistory, self.ui.
+                                        buttonServerHistoryClear))
         self.ui.listServerHistory.model().rowsRemoved.connect(
-            self.serverHistoryChanged)
+            lambda: self.historyChanged(self.ui.listClientHistory, self.ui.
+                                        buttonServerHistoryClear))
+
+        self.ui.buttonClientHistoryClear.clicked.connect(
+            lambda: self.clearItems(self.ui.listClientHistory, self.ui.
+                                    buttonClientHistoryClear))
+        self.ui.buttonServerHistoryClear.clicked.connect(
+            lambda: self.clearItems(self.ui.listServerHistory, self.ui.
+                                    buttonServerHistoryClear))
 
     # Root Events
     def closeEvent(self, event):
@@ -136,17 +144,8 @@ class MainWindow(QMainWindow):
         self.ui.msgBox.exec()
 
     # historyChanged
-    def clientHistoryChanged(self):
-        if self.ui.listClientHistory.count():
-            self.ui.buttonClientHistoryClear.setEnabled(True)
-        else:
-            self.ui.buttonClientHistoryClear.setEnabled(False)
-
-    def serverHistoryChanged(self):
-        if self.ui.listServerHistory.count():
-            self.ui.buttonServerHistoryClear.setEnabled(True)
-        else:
-            self.ui.buttonServerHistoryClear.setEnabled(False)
+    def historyChanged(self, listHistory, buttonHistory):
+        buttonHistory.setEnabled(listHistory.count())
 
     # Wrap Mode Changed
     def wrapModeChanged(self):
@@ -165,12 +164,9 @@ class MainWindow(QMainWindow):
 
     # textChanged
     def textChanged(self):
-        if not self.ui.editorClientOutMessage.toPlainText():
-            self.ui.buttonClientSend.setEnabled(False)
-            self.ui.buttonClientSave.setEnabled(False)
-        else:
-            self.ui.buttonClientSend.setEnabled(True)
-            self.ui.buttonClientSave.setEnabled(True)
+        enabled = self.ui.editorClientOutMessage.toPlainText() != ''
+        self.ui.buttonClientSend.setEnabled(enabled)
+        self.ui.buttonClientSave.setEnabled(enabled)
 
     # GUI Functions
     def clientItemMessages(self, data):
@@ -183,17 +179,13 @@ class MainWindow(QMainWindow):
         self.ui.editorServerOutMessage.setPlainText(data.outMsg)
         # self.ui.labelClientSendInfo.setText(data.sendInfo)
 
-    def clientClearItems(self):
-        self.ui.listClientHistory.clear()
-        self.ui.buttonClientHistoryClear.setEnabled(False)
-        self.ui.statusBar.showMessage('Clear client history', 5000)
-
-    def serverClearItems(self):
-        self.ui.listServerHistory.clear()
-        self.ui.buttonServerHistoryClear.setEnabled(False)
-        self.ui.statusBar.showMessage('Clear server history', 5000)
+    def clearItems(self, listHistory, buttonHistory):
+        listHistory.clear()
+        buttonHistory.setEnabled(False)
+        self.ui.statusBar.showMessage('History clear', 5000)
 
     def clientDeleteItem(self, event):
+        print(self, event)
         if event.key() != 16777223:
             return
         if self.ui.listClientHistory.currentRow() < 0:

@@ -19,7 +19,7 @@ def genAnswerMessage(msg: str, code: str, date: str) -> str:
     answer = ''
     try:
         result = parse(result)
-        answer = f"MSH|^~\&|{result['MSH'][0][5]}|{result['MSH'][0][6]}|{result['MSH'][0][3]}|{result['MSH'][0][4]}|{date}||ACK|||{result['MSH'][0][12]}\r"
+        answer = f"MSH|^~\\&|{result['MSH'][0][5]}|{result['MSH'][0][6]}|{result['MSH'][0][3]}|{result['MSH'][0][4]}|{date}||ACK|||{result['MSH'][0][12]}\r"
         answer += f"MSA|AA|{result['MSH'][0][10]}|Сообщение успешно получено\r"
     except Exception as exc:
         print(exc)
@@ -35,7 +35,7 @@ def genSendingMessage(msg: str,
     if random:
         try:
             result = parse(result)
-            order = str(result['ORC'][0][1])
+            order = str(result['ORC'][0][1]).upper()
             if order == 'SC':
                 result['MSH'][0][10] = timestamp
                 result['ZDS'][0][1] = timestamp + '^'
