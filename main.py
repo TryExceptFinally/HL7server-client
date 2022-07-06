@@ -107,7 +107,14 @@ class MainWindow(QMainWindow):
         self.clientThreadSending.signals.result.connect(
             self.clientResultSending)
 
-        self.ui.listClientHistory.itemClicked.connect(self.clientItemMessages)
+        self.ui.listClientHistory.itemClicked.connect(
+            lambda: self.resultItemMessages(
+                self.ui.editorClientInMessage, self.ui.editorClientOutMessage,
+                self.ui.listClientHistory.currentItem()))
+        self.ui.listServerHistory.itemClicked.connect(
+            lambda: self.resultItemMessages(
+                self.ui.editorServerInMessage, self.ui.editorServerOutMessage,
+                self.ui.listServerHistory.currentItem()))
 
         self.ui.listClientHistory.model().rowsInserted.connect(
             lambda: self.historyChanged(self.ui.listClientHistory, self.ui.
@@ -116,7 +123,6 @@ class MainWindow(QMainWindow):
             lambda: self.historyChanged(self.ui.listClientHistory, self.ui.
                                         buttonClientHistoryClear))
 
-        self.ui.listServerHistory.itemClicked.connect(self.serverItemMessages)
         self.ui.listServerHistory.model().rowsInserted.connect(
             lambda: self.historyChanged(self.ui.listServerHistory, self.ui.
                                         buttonServerHistoryClear))
@@ -167,17 +173,11 @@ class MainWindow(QMainWindow):
         self.ui.buttonClientSave.setEnabled(enabled)
 
     # Result clicked item history
-
-    # GUI Functions
-    def clientItemMessages(self, data):
-        self.ui.editorClientInMessage.setPlainText(data.inMsg)
-        self.ui.editorClientOutMessage.setPlainText(data.outMsg)
-        self.ui.labelClientSendInfo.setText(data.sendInfo)
-
-    def serverItemMessages(self, data):
-        self.ui.editorServerInMessage.setPlainText(data.inMsg)
-        self.ui.editorServerOutMessage.setPlainText(data.outMsg)
-        # self.ui.labelClientSendInfo.setText(data.sendInfo)
+    def resultItemMessages(self, inMsg, outMsg, data):
+        inMsg.setPlainText(data.inMsg)
+        outMsg.setPlainText(data.outMsg)
+        if data.sendInfo:
+            self.ui.labelClientSendInfo.setText(data.sendInfo)
 
     def clearItems(self, listHistory, buttonHistory):
         listHistory.clear()
@@ -318,7 +318,7 @@ class MainWindow(QMainWindow):
         self.ui.editorServerOutMessage.setPlainText(server.outMsg)
         text = f'[{timeMsg}]: From {result}'
         msg = DataItems(self.ui.editorServerInMessage.toPlainText(),
-                        self.ui.editorServerOutMessage.toPlainText(), result)
+                        self.ui.editorServerOutMessage.toPlainText(), '')
         msg.setText(text)
         self.ui.listServerHistory.addItem(msg)
 
