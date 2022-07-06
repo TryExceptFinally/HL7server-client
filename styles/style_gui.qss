@@ -73,7 +73,8 @@ QPlainTextEdit {
 }
 
 QPlainTextEdit:read-only {
-    border: 1px solid gray    
+    color: white;
+    border: 1px solid gray;    
 }
 
 QLabel#statusLabel {
