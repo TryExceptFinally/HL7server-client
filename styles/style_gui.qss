@@ -63,7 +63,8 @@ QMenu::item:selected {
 }
 
 QPlainTextEdit {
-    color: white;
+    color: lightgray;
+    selection-color: white;
     background: #1f2b3a;
     border: 1px solid #2a71a7;
     font: bold 13px;
@@ -71,7 +72,9 @@ QPlainTextEdit {
     padding: 1 1px;
 }
 
-QPlainTextEdit[readOnly="true"] { border: 1px solid gray }
+QPlainTextEdit:read-only {
+    border: 1px solid gray    
+}
 
 QLabel#statusLabel {
     font: 14px;
@@ -101,7 +104,9 @@ QLineEdit {
     padding: 3 3px;
 }
 
-QLineEdit[readOnly="true"] { border: 1px solid gray }
+QLineEdit:read-only { 
+    border: 1px solid gray 
+}
 
 QPushButton {
     color: white;

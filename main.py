@@ -97,7 +97,7 @@ class MainWindow(QMainWindow):
 
         self.ui.actionSaveConfig.triggered.connect(lambda: self.configSave())
         self.ui.actionHelpAbout.triggered.connect(lambda: self.msgAbout())
-        
+
         self.serverThreadListen = SocketThread(self.serverStartListen)
         self.serverThreadListen.signals.finished.connect(self.serverStopListen)
         self.serverThreadListen.signals.result.connect(self.serverResultListen)
@@ -172,6 +172,10 @@ class MainWindow(QMainWindow):
         enabled = self.ui.editorClientOutMessage.toPlainText() != ''
         self.ui.buttonClientSend.setEnabled(enabled)
         self.ui.buttonClientSave.setEnabled(enabled)
+        if enabled:
+            self.ui.editorClientOutMessage.setStyleSheet('QPlainTextEdit { color: white; }')
+        else:
+            self.ui.editorClientOutMessage.setStyleSheet('QPlainTextEdit { color: lightgray; }')
 
     # Result clicked item history
     def resultItemMessages(self, inMsg, outMsg, data):

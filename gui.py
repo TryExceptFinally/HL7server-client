@@ -149,6 +149,7 @@ class Ui_MainWindow:
 
         # Editors
         self.editorClientOutMessage = QPlainTextEdit(self.tabClient)
+        self.editorClientOutMessage.setPlaceholderText('Enter/upload outgoing message')
         self.editorClientInMessage = QPlainTextEdit(self.tabClient)
 
         self.editorServerOutMessage = QPlainTextEdit(self.tabServer)
