@@ -173,9 +173,11 @@ class MainWindow(QMainWindow):
         self.ui.buttonClientSend.setEnabled(enabled)
         self.ui.buttonClientSave.setEnabled(enabled)
         if enabled:
-            self.ui.editorClientOutMessage.setStyleSheet('QPlainTextEdit { color: white; }')
+            self.ui.editorClientOutMessage.setStyleSheet(
+                'QPlainTextEdit { color: white; }')
         else:
-            self.ui.editorClientOutMessage.setStyleSheet('QPlainTextEdit { color: lightgray; }')
+            self.ui.editorClientOutMessage.setStyleSheet(
+                'QPlainTextEdit { color: lightgray; }')
 
     # Result clicked item history
     def resultItemMessages(self, inMsg, outMsg, data):
@@ -313,6 +315,7 @@ class MainWindow(QMainWindow):
         while server.run:
             timeMsg, result = server.listen()
             self.serverThreadListen.signals.result.emit(timeMsg, result)
+        return 'Server closed'
 
     def serverResultListen(self, timeMsg: str, result: str):
         if not server.inMsg:
@@ -327,8 +330,8 @@ class MainWindow(QMainWindow):
         msg.setText(text)
         self.ui.listServerHistory.addItem(msg)
 
-    def serverStopListen(self):
-        self.ui.statusBar.showMessage('Server closed', 3000)
+    def serverStopListen(self, result: str):
+        self.ui.statusBar.showMessage(result, 3000)
         self.ui.buttonServerListen.setText('START SERVER')
         self.ui.editorServerOutMessage.setReadOnly(False)
 
