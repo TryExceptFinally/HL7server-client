@@ -108,8 +108,8 @@ class MainWindow(QMainWindow):
         self.clientThreadSending.signals.result.connect(
             self.clientResultSending)
 
-        self.ui.listClientHistory.keyPressEvent = self.clientDeleteItem
         self.ui.listClientHistory.itemClicked.connect(self.clientItemMessages)
+
         self.ui.listClientHistory.model().rowsInserted.connect(
             lambda: self.historyChanged(self.ui.listClientHistory, self.ui.
                                         buttonClientHistoryClear))
@@ -117,7 +117,6 @@ class MainWindow(QMainWindow):
             lambda: self.historyChanged(self.ui.listClientHistory, self.ui.
                                         buttonClientHistoryClear))
 
-        self.ui.listServerHistory.keyPressEvent = self.serverDeleteItem
         self.ui.listServerHistory.itemClicked.connect(self.serverItemMessages)
         self.ui.listServerHistory.model().rowsInserted.connect(
             lambda: self.historyChanged(self.ui.listServerHistory, self.ui.
@@ -168,6 +167,8 @@ class MainWindow(QMainWindow):
         self.ui.buttonClientSend.setEnabled(enabled)
         self.ui.buttonClientSave.setEnabled(enabled)
 
+    # Result clicked item history
+
     # GUI Functions
     def clientItemMessages(self, data):
         self.ui.editorClientInMessage.setPlainText(data.inMsg)
@@ -183,23 +184,6 @@ class MainWindow(QMainWindow):
         listHistory.clear()
         buttonHistory.setEnabled(False)
         self.ui.statusBar.showMessage('History clear', 5000)
-
-    def clientDeleteItem(self, event):
-        print(self, event)
-        if event.key() != 16777223:
-            return
-        if self.ui.listClientHistory.currentRow() < 0:
-            return
-        self.ui.listClientHistory.takeItem(
-            self.ui.listClientHistory.currentRow())
-
-    def serverDeleteItem(self, event):
-        if event.key() != 16777223:
-            return
-        if self.ui.listServerHistory.currentRow() < 0:
-            return
-        self.ui.listServerHistory.takeItem(
-            self.ui.listServerHistory.currentRow())
 
     def configSave(self):
         config.clientIP = self.ui.inputClientIP.text()

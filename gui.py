@@ -1,5 +1,5 @@
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QIntValidator
+from PyQt6.QtGui import QIntValidator, QKeyEvent
 from PyQt6.QtWidgets import (QVBoxLayout, QPlainTextEdit, QPushButton, QLabel,
                              QLineEdit, QGridLayout, QWidget, QTabWidget,
                              QCheckBox, QListWidget, QStatusBar, QDockWidget,
@@ -160,8 +160,8 @@ class Ui_MainWindow:
         self.checkClientAccNumber = QCheckBox('AN +1', self.tabClient)
 
         #  History Widget
-        self.listClientHistory = QListWidget(self.clientHistoryWidget)
-        self.listServerHistory = QListWidget(self.serverHistoryWidget)
+        self.listClientHistory = HistoryWidget(self.clientHistoryWidget)
+        self.listServerHistory = HistoryWidget(self.serverHistoryWidget)
 
         toolTip = "Press the 'Delete' button to delete the selected item"
         self.listClientHistory.setToolTip(toolTip)
@@ -239,3 +239,16 @@ class Ui_MainWindow:
 
         root.setCentralWidget(self.centralWidget)
         root.setMenuBar(self.menuBar)
+
+
+class HistoryWidget(QListWidget):
+
+    def __init__(self, parent) -> None:
+        super().__init__(parent)
+
+    def keyPressEvent(self, e: QKeyEvent):
+        super().keyPressEvent(e)
+        if e.key() == Qt.Key.Key_Delete:
+            if self.currentRow() < 0:
+                return
+            self.takeItem(self.currentRow())
