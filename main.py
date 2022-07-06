@@ -97,7 +97,6 @@ class MainWindow(QMainWindow):
 
         self.ui.actionSaveConfig.triggered.connect(lambda: self.configSave())
         self.ui.actionHelpAbout.triggered.connect(lambda: self.msgAbout())
-
         self.serverThreadListen = SocketThread(self.serverStartListen)
         self.serverThreadListen.signals.finished.connect(self.serverStopListen)
         self.serverThreadListen.signals.result.connect(self.serverResultListen)
