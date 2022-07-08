@@ -67,7 +67,8 @@ class MainWindow(QMainWindow):
         self.ui.serverDockWidget.setHidden(config.serverHistory)
 
         self.ui.editorClientOutMessage.textChanged.connect(self.textChanged)
-        self.ui.editorClientOutMessage.cursorPositionChanged.connect(self.cursorPosition)
+        self.ui.editorClientOutMessage.cursorPositionChanged.connect(
+            self.cursorPosition)
 
         self.ui.buttonClientLoad.clicked.connect(lambda: self.clientLoad())
         self.ui.buttonClientSave.clicked.connect(lambda: self.clientSave())
@@ -149,10 +150,10 @@ class MainWindow(QMainWindow):
         for i in range(len(segment)):
             lenght += len(segment[i]) + 1
             if lenght > position:
-                
                 # print(f"{segment[0]}_{i}:'{segment[i]}'")
                 # self.ui.statusBar.showMessage(f"{segment[0]}_{i} : '{segment[i]}'")
-                self.ui.labelClientSendInfo.setText(f"{segment[0]}_{i} : '{segment[i]}'")
+                self.ui.labelClientSendInfo.setText(
+                    f"{segment[0]}_{i} : '{segment[i]}'")
                 break
 
     # Root Events
