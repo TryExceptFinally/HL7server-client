@@ -67,6 +67,7 @@ class MainWindow(QMainWindow):
         self.ui.serverDockWidget.setHidden(config.serverHistory)
 
         self.ui.editorClientOutMessage.textChanged.connect(self.textChanged)
+        self.ui.editorClientOutMessage.cursorPositionChanged.connect(self.cursorPosition)
 
         self.ui.buttonClientLoad.clicked.connect(lambda: self.clientLoad())
         self.ui.buttonClientSave.clicked.connect(lambda: self.clientSave())
@@ -137,6 +138,21 @@ class MainWindow(QMainWindow):
         self.ui.buttonServerHistoryClear.clicked.connect(
             lambda: self.clearItems(self.ui.listServerHistory, self.ui.
                                     buttonServerHistoryClear))
+
+    def cursorPosition(self):
+        position = self.ui.editorClientOutMessage.textCursor().positionInBlock(
+        )
+        # block = self.ui.editorClientOutMessage.textCursor().blockNumber()
+        text = self.ui.editorClientOutMessage.textCursor().block().text()
+        segment = text.split('|')
+        lenght = 0
+        for i in range(len(segment)):
+            lenght += len(segment[i]) + 1
+            if lenght > position:
+                # print(f"{segment[0]}_{i}:'{segment[i]}'")
+                # self.ui.statusBar.showMessage(f"{segment[0]}_{i} : '{segment[i]}'")
+                self.ui.labelClientSendInfo.setText(f"{segment[0]}_{i} : '{segment[i]}'")
+                break
 
     # Root Events
     def closeEvent(self, event):
