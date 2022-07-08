@@ -149,6 +149,7 @@ class MainWindow(QMainWindow):
         for i in range(len(segment)):
             lenght += len(segment[i]) + 1
             if lenght > position:
+                
                 # print(f"{segment[0]}_{i}:'{segment[i]}'")
                 # self.ui.statusBar.showMessage(f"{segment[0]}_{i} : '{segment[i]}'")
                 self.ui.labelClientSendInfo.setText(f"{segment[0]}_{i} : '{segment[i]}'")
