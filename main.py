@@ -150,10 +150,14 @@ class MainWindow(QMainWindow):
         for i in range(len(segment)):
             lenght += len(segment[i]) + 1
             if lenght > position:
-                # print(f"{segment[0]}_{i}:'{segment[i]}'")
-                # self.ui.statusBar.showMessage(f"{segment[0]}_{i} : '{segment[i]}'")
+                if i == 0:
+                    self.ui.labelClientSendInfo.setText(f"Segment: {segment[0]}")
+                    break
+                element = segment[i]
+                if segment[0] == 'MSH':
+                    i += 1
                 self.ui.labelClientSendInfo.setText(
-                    f"{segment[0]}_{i} : '{segment[i]}'")
+                    f"{segment[0]}_{i}: '{element}'")
                 break
 
     # Root Events
