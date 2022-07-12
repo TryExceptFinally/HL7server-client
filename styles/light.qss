@@ -72,7 +72,6 @@ QPlainTextEdit:read-only {
 
 QLabel#statusLabel {
     font: 14px;
-    border-top: none;
 }
 
 QLabel#titleLabel {
@@ -81,7 +80,6 @@ QLabel#titleLabel {
     max-width: 5em;
     min-height: 1em;
     padding: 0 10px;
-    border-top: 1px solid #063852;
 }
 
 QLineEdit { 
@@ -126,7 +124,9 @@ QPushButton:!enabled {
 }
 
 QTabWidget::pane {
-    border-top: 2px solid #1E7DC5;
+    border: 1px solid #1E7DC5;
+    border-radius: 5px;
+    border-top-left-radius: 0px;
 }
 
 QTabBar::tab {

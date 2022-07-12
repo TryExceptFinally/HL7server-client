@@ -20,7 +20,7 @@ class Ui_MainWindow:
         root.setMinimumSize(root.WIDTH, root.HEIGHT)
         root.resize(root.WIDTH, root.HEIGHT)
 
-        self.msgBox = QMessageBox()
+        self.msgBox = QMessageBox(root)
         self.msgBox.setIcon(QMessageBox.Icon.Information)
 
         # Central Widget

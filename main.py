@@ -180,7 +180,7 @@ class MainWindow(QMainWindow):
 
     # messagebox
     def msgAbout(self):
-        self.ui.msgBox.setText("<font size='5'>\
+        self.ui.msgBox.setText("<font size='3'>\
                 <p>HL7 client and server</p>\
                     Current version: <a href='https://github.com/TryExceptFinnaly/HL7server-client/blob/master/dist/HL7.exe'>GitHub</a>"
                                )
