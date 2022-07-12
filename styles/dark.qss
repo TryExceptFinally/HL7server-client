@@ -179,3 +179,11 @@ QListWidget {
     color: white;
     min-width: 320px;
 }
+
+QMessageBox {
+    background: #060122;
+}
+
+QMessageBox QLabel {
+    color: white;
+}
