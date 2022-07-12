@@ -19,6 +19,7 @@ class Config:
         self.loadDir: str = './'
         self.saveDir: str = './message.hl7'
         self.wrapMode: bool = True
+        self.style: str = 'dark'
 
     def getstring(self, section, option, fallback):
         string = self.config.get(section, option, fallback=fallback)
@@ -72,6 +73,7 @@ class Config:
         self.wrapMode = self.getboolean('Settings',
                                         'wrapmode',
                                         fallback=self.wrapMode)
+        self.style = self.getstring('Settings', 'style', fallback=self.style)
 
     def save(self):
         self.config['Client'] = {
@@ -89,7 +91,10 @@ class Config:
             'history_hidden': self.serverHistory
         }
         self.config['Paths'] = {'load': self.loadDir, 'save': self.saveDir}
-        self.config['Settings'] = {'wrapmode': self.wrapMode}
+        self.config['Settings'] = {
+            'wrapmode': self.wrapMode,
+            'style': self.style
+        }
         with open(self.ini, 'w') as configfile:
             try:
                 self.config.write(configfile)

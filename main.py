@@ -97,6 +97,11 @@ class MainWindow(QMainWindow):
         self.ui.actionWrapMode.setChecked(config.wrapMode)
         self.wrapModeChanged()
 
+        self.ui.actionDarkStyle.triggered.connect(
+            lambda: self.setStyle('dark'))
+        self.ui.actionLightStyle.triggered.connect(
+            lambda: self.setStyle('light'))
+
         self.ui.actionSaveConfig.triggered.connect(lambda: self.configSave())
         self.ui.actionHelpAbout.triggered.connect(lambda: self.msgAbout())
 
@@ -140,6 +145,14 @@ class MainWindow(QMainWindow):
             lambda: self.clearItems(self.ui.listServerHistory, self.ui.
                                     buttonServerHistoryClear))
 
+        self.setStyle(config.style)
+
+    def setStyle(self, style):
+        stylesheet = resource_path(f'styles\\{style}.qss')
+        with open(stylesheet, 'r') as ss:
+            self.setStyleSheet(ss.read())
+            self.styleApp = style
+
     def cursorPosition(self):
         position = self.ui.editorClientOutMessage.textCursor().positionInBlock(
         )
@@ -151,7 +164,8 @@ class MainWindow(QMainWindow):
             lenght += len(segment[i]) + 1
             if lenght > position:
                 if i == 0:
-                    self.ui.labelClientSendInfo.setText(f"Segment: {segment[0]}")
+                    self.ui.labelClientSendInfo.setText(
+                        f"Segment: {segment[0]}")
                     break
                 element = segment[i]
                 if segment[0] == 'MSH':
@@ -166,8 +180,11 @@ class MainWindow(QMainWindow):
 
     # messagebox
     def msgAbout(self):
-        self.ui.msgBox.setText('HL7 client and server')
-        self.ui.msgBox.setWindowTitle('LINS')
+        self.ui.msgBox.setText("<font size='5'>\
+                <p>HL7 client and server</p>\
+                    Currect version: <a href='https://github.com/TryExceptFinnaly/HL7server-client/blob/master/dist/HL7.exe'>GitHub</a>"
+                               )
+        self.ui.msgBox.setWindowTitle('HL7 CS')
         self.ui.msgBox.exec()
 
     # historyChanged
@@ -194,12 +211,12 @@ class MainWindow(QMainWindow):
         enabled = self.ui.editorClientOutMessage.toPlainText() != ''
         self.ui.buttonClientSend.setEnabled(enabled)
         self.ui.buttonClientSave.setEnabled(enabled)
-        if enabled:
-            self.ui.editorClientOutMessage.setStyleSheet(
-                'QPlainTextEdit { color: white; }')
-        else:
-            self.ui.editorClientOutMessage.setStyleSheet(
-                'QPlainTextEdit { color: lightgray; }')
+        # if enabled:
+        #     self.ui.editorClientOutMessage.setStyleSheet(
+        #         'QPlainTextEdit { color: black; }')
+        # else:
+        #     self.ui.editorClientOutMessage.setStyleSheet(
+        #         'QPlainTextEdit { color: gray; }')
 
     # Result clicked item history
     def resultItemMessages(self, inMsg, outMsg, data):
@@ -226,6 +243,7 @@ class MainWindow(QMainWindow):
         config.serverHistory = self.ui.serverDockWidget.isHidden()
         config.loadDir = self.loadDir
         config.saveDir = self.saveDir
+        config.style = self.styleApp
         config.save()
         print('[CONFIG]: Config save')
 
@@ -392,10 +410,6 @@ server = ServerHL7('127.0.0.1', config.serverPort)
 
 app = QApplication(sys.argv)
 root = MainWindow()
-
-stylesheet = resource_path('styles\\style_gui.qss')
-with open(stylesheet, 'r') as ss:
-    root.setStyleSheet(ss.read())
 root.show()
 
 sys.exit(app.exec())

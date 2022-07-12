@@ -37,6 +37,7 @@ class Ui_MainWindow:
         self.menuFile = QMenu('File', self.menuBar)
         self.menuHistory = QMenu('History', self.menuBar)
         self.menuSettings = QMenu('Settings', self.menuBar)
+        self.menuStyles = QMenu('Styles', self.menuBar)
         self.menuHelp = QMenu('Help', self.menuBar)
 
         # Action Menu
@@ -51,6 +52,12 @@ class Ui_MainWindow:
         self.actionServerShowHistory = QWidgetAction(self.menuBar)
         self.actionServerShowHistory.setText('Show(Server)')
         self.actionServerShowHistory.setCheckable(True)
+        # Styles
+        self.actionDarkStyle = QWidgetAction(self.menuStyles)
+        self.actionDarkStyle.setText('Dark')
+        self.actionLightStyle = QWidgetAction(self.menuStyles)
+        self.actionLightStyle.setText('Light')
+        
         # Config
         self.actionSaveConfig = QWidgetAction(self.menuBar)
         self.actionSaveConfig.setText('Save Config')
@@ -61,13 +68,18 @@ class Ui_MainWindow:
         # Help
         self.actionHelpAbout = QWidgetAction(self.menuBar)
         self.actionHelpAbout.setText('About')
-
+        
         self.menuFile.addAction(self.actionExitApp)
         self.menuHistory.addAction(self.actionClientShowHistory)
         self.menuHistory.addAction(self.actionServerShowHistory)
         self.menuSettings.addAction(self.actionSaveConfig)
         self.menuSettings.addAction(self.actionWrapMode)
         self.menuHelp.addAction(self.actionHelpAbout)
+
+        self.menuStyles.addAction(self.actionLightStyle)
+        self.menuStyles.addAction(self.actionDarkStyle)
+
+        self.menuSettings.addMenu(self.menuStyles)
 
         self.menuBar.addMenu(self.menuFile)
         self.menuBar.addMenu(self.menuHistory)

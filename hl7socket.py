@@ -54,7 +54,7 @@ class ServerHL7(TcpSocket):
             rlist, wlist, xlist = select.select(inputs, outputs, inputs)
             if not self.run:
                 print('[SERVER]: Stopped listen')
-                return
+                return '[STOPPED]', ''
             for sock in rlist:
                 print('[SERVER]: Read!', sock)
                 if sock is self.sock:
