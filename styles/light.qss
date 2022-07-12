@@ -33,8 +33,7 @@ QDockWidget::close-button:hover {
 }
 
 QMenuBar {
-    color: white;
-    background: #2496ED;
+    background: #F1F1F2;
     border-bottom: 1px solid #1E7DC5;
 }
 
@@ -43,21 +42,20 @@ QMenuBar::item {
 }
 
 QMenuBar::item:selected {
-    background: #1E7DC5;
+    border-bottom: 4px solid #2496ED;
 }
 
 QMenuBar::item:pressed {
-    background: #1E7DC5;
+    border-bottom: 4px solid #1E7DC5;
 }
 
 QMenu {
-    color: white;
-    background: #2496ED;
-    border: 1px solid #3a5199;
+    background: #F1F1F2;
+    border: 1px solid #2496ED;
 }
 
 QMenu::item:selected {
-    background: #1E7DC5;
+    background: #2496ED;
 }
 
 QPlainTextEdit {
