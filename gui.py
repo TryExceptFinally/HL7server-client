@@ -57,7 +57,7 @@ class Ui_MainWindow:
         self.actionDarkStyle.setText('Dark')
         self.actionLightStyle = QWidgetAction(self.menuStyles)
         self.actionLightStyle.setText('Light')
-        
+
         # Config
         self.actionSaveConfig = QWidgetAction(self.menuBar)
         self.actionSaveConfig.setText('Save Config')
@@ -68,7 +68,7 @@ class Ui_MainWindow:
         # Help
         self.actionHelpAbout = QWidgetAction(self.menuBar)
         self.actionHelpAbout.setText('About')
-        
+
         self.menuFile.addAction(self.actionExitApp)
         self.menuHistory.addAction(self.actionClientShowHistory)
         self.menuHistory.addAction(self.actionServerShowHistory)
@@ -161,7 +161,8 @@ class Ui_MainWindow:
 
         # Editors
         self.editorClientOutMessage = QPlainTextEdit(self.tabClient)
-        self.editorClientOutMessage.setPlaceholderText('Enter/upload outgoing message')
+        self.editorClientOutMessage.setPlaceholderText(
+            'Enter/upload outgoing message')
         self.editorClientInMessage = QPlainTextEdit(self.tabClient)
 
         self.editorServerOutMessage = QPlainTextEdit(self.tabServer)
