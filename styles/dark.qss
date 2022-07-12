@@ -16,14 +16,14 @@ QDockWidget {
 
 QDockWidget::title {
     background: #1f2b3a;
-    border: 1px solid #2a71a7;
+    border: 1px solid #3a5199;
     border-radius: 5px;
     text-align: center;
 }
 
 QDockWidget::close-button {
     background: white;
-    border: 1px solid #2a71a7;
+    border: 1px solid #3a5199;
     border-radius: 5px;
     subcontrol-position: top right;
     subcontrol-origin: margin;
@@ -66,7 +66,7 @@ QPlainTextEdit {
     color: white;
     selection-color: white;
     background: #1f2b3a;
-    border: 1px solid #2a71a7;
+    border: 1px solid #3a5199;
     font: bold 13px;
     border-radius: 5px;
     padding: 1 1px;
@@ -97,7 +97,7 @@ QLineEdit {
     color: white;
     background: #1f2b3a;
     font: 15px;
-    border: 1px solid #2a71a7;
+    border: 1px solid #3a5199;
     border-radius: 5px; 
     height: 1em;
     min-width: 9em;
@@ -174,7 +174,7 @@ QCheckBox {
 QListWidget {
     background: #1f2b3a;
     border-radius: 5px;
-    border: 1px solid #2a71a7;
+    border: 1px solid #3a5199;
     font: 16px;
     color: white;
     min-width: 320px;
