@@ -147,6 +147,12 @@ class MainWindow(QMainWindow):
 
         self.setStyle(config.style)
 
+    # Root Events
+    def closeEvent(self, event):
+        self.ui.settingsWindow.setValue('height', self.rect().height())
+        self.ui.settingsWindow.setValue('width', self.rect().width())
+        self.configSave()
+
     def setStyle(self, style):
         stylesheet = resource_path(f'styles\\{style}.qss')
         with open(stylesheet, 'r') as ss:
@@ -173,12 +179,6 @@ class MainWindow(QMainWindow):
                 self.ui.labelClientSendInfo.setText(
                     f"{segment[0]}_{i}: '{element}'")
                 break
-
-    # Root Events
-    def closeEvent(self, event):
-        self.ui.settingsWindow.setValue('windowHeight', self.rect().height())
-        self.ui.settingsWindow.setValue('windowWidth', self.rect().width())
-        self.configSave()
 
     # messagebox
     def msgAbout(self):

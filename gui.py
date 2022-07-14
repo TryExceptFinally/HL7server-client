@@ -20,8 +20,8 @@ class Ui_MainWindow:
         root.setMinimumSize(minWidth, minHeight)
 
         self.getSettingsValues()
-        rWidth = self.settingsWindow.value('windowWidth', minWidth)
-        rHeight = self.settingsWindow.value('windowHeight', minHeight)
+        rWidth = self.settingsWindow.value('width', minWidth)
+        rHeight = self.settingsWindow.value('height', minHeight)
         root.resize(rWidth, rHeight)
 
         self.msgBox = QMessageBox(root)
