@@ -10,7 +10,7 @@ from hl7socket import ClientHL7, ServerHL7
 from config import Config
 
 
-def resource_path(relative):
+def resourcePath(relative):
     if hasattr(sys, '_MEIPASS'):
         return os.path.join(sys._MEIPASS, relative)
     else:
@@ -25,21 +25,21 @@ class MainWindow(QMainWindow):
         self.ui.setupUi(self)
 
         #  images
-        self.setWindowIcon(QIcon(resource_path('ico.ico')))
+        self.setWindowIcon(QIcon(resourcePath('ico.ico')))
         self.ui.buttonClientSend.setIcon(
-            QIcon(resource_path('images\\send.png')))
+            QIcon(resourcePath('images\\send.png')))
         self.ui.buttonClientLoad.setIcon(
-            QIcon(resource_path('images\\load.png')))
+            QIcon(resourcePath('images\\load.png')))
         self.ui.buttonClientSave.setIcon(
-            QIcon(resource_path('images\\save.png')))
+            QIcon(resourcePath('images\\save.png')))
         self.ui.buttonClientClear.setIcon(
-            QIcon(resource_path('images\\delete.png')))
+            QIcon(resourcePath('images\\delete.png')))
         self.ui.buttonClientHistoryClear.setIcon(
-            QIcon(resource_path('images\\clear.png')))
+            QIcon(resourcePath('images\\clear.png')))
         self.ui.buttonServerHistoryClear.setIcon(
-            QIcon(resource_path('images\\clear.png')))
+            QIcon(resourcePath('images\\clear.png')))
         self.ui.buttonServerListen.setIcon(
-            QIcon(resource_path('images\\listen.png')))
+            QIcon(resourcePath('images\\listen.png')))
 
         #  settings
         self.ui.inputClientIP.setText(client.host)
@@ -154,7 +154,7 @@ class MainWindow(QMainWindow):
         self.configSave()
 
     def setStyle(self, style):
-        stylesheet = resource_path(f'styles\\{style}.qss')
+        stylesheet = resourcePath(f'styles\\{style}.qss')
         with open(stylesheet, 'r') as ss:
             self.setStyleSheet(ss.read())
             self.styleApp = style
@@ -413,6 +413,7 @@ server = ServerHL7('127.0.0.1', config.serverPort)
 
 app = QApplication(sys.argv)
 root = MainWindow()
+root.setWindowTitle('HL7 CS v' + app.applicationVersion())
 root.show()
 
 sys.exit(app.exec())
