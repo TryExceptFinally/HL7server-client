@@ -1,4 +1,4 @@
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import Qt, QSettings
 from PyQt6.QtGui import QIntValidator, QKeyEvent
 from PyQt6.QtWidgets import (QVBoxLayout, QPlainTextEdit, QPushButton, QLabel,
                              QLineEdit, QGridLayout, QWidget, QTabWidget,
@@ -10,15 +10,19 @@ class Ui_MainWindow:
 
     def setupUi(self, root):
         # Main Window
-        root.WIDTH = 1200
-        root.HEIGHT = 600
+        minWidth = 1200
+        minHeight = 600
         root.setWindowTitle('HL7')
         # root.setObjectName('MainWindow')
         # root.setWindowFlags(Qt.WindowType.CustomizeWindowHint | Qt.WindowType.FramelessWindowHint)
 
         root.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
-        root.setMinimumSize(root.WIDTH, root.HEIGHT)
-        root.resize(root.WIDTH, root.HEIGHT)
+        root.setMinimumSize(minWidth, minHeight)
+
+        self.getSettingsValues()
+        rWidth = self.settingsWindow.value('windowWidth', minWidth)
+        rHeight = self.settingsWindow.value('windowHeight', minHeight)
+        root.resize(rWidth, rHeight)
 
         self.msgBox = QMessageBox(root)
         self.msgBox.setIcon(QMessageBox.Icon.Information)
@@ -253,6 +257,9 @@ class Ui_MainWindow:
 
         root.setCentralWidget(self.centralWidget)
         root.setMenuBar(self.menuBar)
+
+    def getSettingsValues(self):
+        self.settingsWindow = QSettings('HL7 CS', 'Window size')
 
 
 class HistoryWidget(QListWidget):

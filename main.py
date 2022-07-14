@@ -176,6 +176,8 @@ class MainWindow(QMainWindow):
 
     # Root Events
     def closeEvent(self, event):
+        self.ui.settingsWindow.setValue('windowHeight', self.rect().height())
+        self.ui.settingsWindow.setValue('windowWidth', self.rect().width())
         self.configSave()
 
     # messagebox
