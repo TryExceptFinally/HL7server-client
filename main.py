@@ -145,13 +145,20 @@ class MainWindow(QMainWindow):
             lambda: self.clearItems(self.ui.listServerHistory, self.ui.
                                     buttonServerHistoryClear))
 
-        self.setStyle(config.style)
+        self.loadStyle()
 
     # Root Events
     def closeEvent(self, event):
         self.ui.settingsWindow.setValue('height', self.rect().height())
         self.ui.settingsWindow.setValue('width', self.rect().width())
         self.configSave()
+
+    def loadStyle(self):
+        match config.style:
+            case 'dark':
+                self.ui.actionDarkStyle.trigger()
+            case 'light':
+                self.ui.actionLightStyle.trigger()
 
     def setStyle(self, style):
         stylesheet = resourcePath(f'styles\\{style}.qss')

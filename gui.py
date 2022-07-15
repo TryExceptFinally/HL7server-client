@@ -1,5 +1,5 @@
 from PyQt6.QtCore import Qt, QSettings
-from PyQt6.QtGui import QIntValidator, QKeyEvent
+from PyQt6.QtGui import QIntValidator, QKeyEvent, QActionGroup
 from PyQt6.QtWidgets import (QVBoxLayout, QPlainTextEdit, QPushButton, QLabel,
                              QLineEdit, QGridLayout, QWidget, QTabWidget,
                              QCheckBox, QListWidget, QStatusBar, QDockWidget,
@@ -12,7 +12,7 @@ class Ui_MainWindow:
         # Main Window
         minWidth = 1200
         minHeight = 600
-        root.setWindowTitle('HL7')
+        # root.setWindowTitle('HL7')
         # root.setObjectName('MainWindow')
         # root.setWindowFlags(Qt.WindowType.CustomizeWindowHint | Qt.WindowType.FramelessWindowHint)
 
@@ -57,10 +57,18 @@ class Ui_MainWindow:
         self.actionServerShowHistory.setText('Show(Server)')
         self.actionServerShowHistory.setCheckable(True)
         # Styles
+        self.actionStylesGroup = QActionGroup(self.menuStyles)
+        self.actionStylesGroup.setExclusive(True)
+
         self.actionDarkStyle = QWidgetAction(self.menuStyles)
         self.actionDarkStyle.setText('Dark')
+        self.actionDarkStyle.setCheckable(True)
         self.actionLightStyle = QWidgetAction(self.menuStyles)
         self.actionLightStyle.setText('Light')
+        self.actionLightStyle.setCheckable(True)
+
+        self.actionStylesGroup.addAction(self.actionDarkStyle)
+        self.actionStylesGroup.addAction(self.actionLightStyle)
 
         # Config
         self.actionSaveConfig = QWidgetAction(self.menuBar)
