@@ -191,8 +191,10 @@ class MainWindow(QMainWindow):
     def msgAbout(self):
         self.ui.msgBox.setText("<font size='3'>\
                 <p>HL7 client and server</p>\
-                    Current version: <a style='color:red; font-weight: bold;'\
-                        href='https://github.com/TryExceptFinnaly/HL7server-client/blob/master/dist/HL7.exe'>GitHub</a>"
+                    <p>Repository: <a style='color:red; font-weight:bold;'\
+                        href='https://github.com/TryExceptFinnaly/HL7server-client'>GitHub</a></p>\
+                    <p><a style='color:red; font-weight:bold;'\
+                        href='https://github.com/TryExceptFinnaly/HL7server-client/raw/master/dist/HL7.exe'>Download</a> current version</p>"
                                )
         self.ui.msgBox.setWindowTitle('HL7 CS')
         self.ui.msgBox.exec()
