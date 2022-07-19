@@ -63,12 +63,13 @@ class ServerHL7(TcpSocket):
                         inputs.append(connection)
                 else:
                     data = self.read(sock, 1)
-                    self.inMsg = b''
+                    self.inMsg = "No formating HL7 message received from client"
                     if data == b'\x0b':
+                        self.inMsg = b''
                         data_all = b''
                         while data_all[-2:] != b'\x1c\r':
                             data = self.read(sock)
-                            #print('[SERVER]: s.recv', data)
+                            # print('[SERVER]: s.recv', data)
                             if not data:
                                 break
                             data_all += data

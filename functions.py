@@ -22,8 +22,9 @@ def genAnswerMessage(msg: str, code: str, date: str) -> str:
         answer = f"MSH|^~\\&|{result['MSH'][0][5]}|{result['MSH'][0][6]}|{result['MSH'][0][3]}|{result['MSH'][0][4]}|{date}||ACK|||{result['MSH'][0][12]}\r"
         answer += f"MSA|AA|{result['MSH'][0][10]}|Сообщение успешно получено\r"
     except Exception as exc:
-        print(exc)
-    return answer
+        print(f'[genAnswerMessage]: {exc}')
+    finally:
+        return answer
 
 
 def genSendingMessage(msg: str,

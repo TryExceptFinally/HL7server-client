@@ -370,10 +370,10 @@ class MainWindow(QMainWindow):
         return 'Server closed'
 
     def serverResultListen(self, timeMsg: str, result: str):
-        if not server.inMsg:
-            self.ui.statusBar.showMessage('Empty message received from client',
-                                          3000)
-            return
+        # if not server.inMsg:
+        #     self.ui.statusBar.showMessage('Empty message received from client',
+        #                                   3000)
+        #     return
         self.ui.editorServerInMessage.setPlainText(server.inMsg)
         self.ui.editorServerOutMessage.setPlainText(server.outMsg)
         text = f'[{timeMsg}]: From {result}'
