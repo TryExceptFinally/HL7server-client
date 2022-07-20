@@ -239,7 +239,7 @@ class Ui_MainWindow:
         self.clientEditorsSplitter = QSplitter(Qt.Orientation.Vertical)
         self.clientEditorsSplitter.addWidget(self.clientOutgoingWidget)
         self.clientEditorsSplitter.addWidget(self.editorClientInMessage)
-        
+
         self.serverEditorsSplitter = QSplitter(Qt.Orientation.Vertical)
         self.serverEditorsSplitter.addWidget(self.serverOutgoingWidget)
         self.serverEditorsSplitter.addWidget(self.editorServerInMessage)
