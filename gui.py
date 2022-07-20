@@ -3,7 +3,8 @@ from PyQt6.QtGui import QIntValidator, QKeyEvent, QActionGroup
 from PyQt6.QtWidgets import (QVBoxLayout, QPlainTextEdit, QPushButton, QLabel,
                              QLineEdit, QGridLayout, QWidget, QTabWidget,
                              QCheckBox, QListWidget, QStatusBar, QDockWidget,
-                             QMenu, QMenuBar, QWidgetAction, QMessageBox)
+                             QMenu, QMenuBar, QWidgetAction, QMessageBox,
+                             QSplitter)
 
 
 class Ui_MainWindow:
@@ -100,6 +101,7 @@ class Ui_MainWindow:
 
         # Status Bar
         self.statusBar = QStatusBar(self.centralWidget)
+        self.statusBar.setSizeGripEnabled(False)
 
         # Tab Widget
         self.tabWidget = QTabWidget(self.centralWidget)
@@ -107,17 +109,25 @@ class Ui_MainWindow:
         # Tabs
         self.tabClient = QWidget(self.tabWidget)
         self.tabServer = QWidget(self.tabWidget)
-        # self.tabAPI = QWidget(self.tabWidget)
 
-        # Layouts
         self.clientLayout = QGridLayout(self.tabClient)
         self.serverLayout = QGridLayout(self.tabServer)
 
-        self.clientHistoryWidget = QWidget(self.tabClient)
-        self.serverHistoryWidget = QWidget(self.tabServer)
+        self.clientOutgoingWidget = QWidget(self.tabClient)
+        self.clientOutgoingLayout = QGridLayout(self.clientOutgoingWidget)
+        self.clientOutgoingLayout.setContentsMargins(0, 0, 0, 0)
 
+        self.clientHistoryWidget = QWidget(self.tabClient)
         self.clientHistoryLayout = QGridLayout(self.clientHistoryWidget)
+        self.clientHistoryLayout.setContentsMargins(0, 6, 0, 0)
+
+        self.serverOutgoingWidget = QWidget(self.tabServer)
+        self.serverOutgoingLayout = QGridLayout(self.serverOutgoingWidget)
+        self.serverOutgoingLayout.setContentsMargins(0, 0, 0, 0)
+
+        self.serverHistoryWidget = QWidget(self.tabServer)
         self.serverHistoryLayout = QGridLayout(self.serverHistoryWidget)
+        self.serverHistoryLayout.setContentsMargins(0, 6, 0, 0)
 
         # Labels
         self.labelClientIP = QLabel('IP', self.tabClient)
@@ -200,6 +210,18 @@ class Ui_MainWindow:
         self.serverHistoryLayout.addWidget(self.listServerHistory)
         self.serverHistoryLayout.addWidget(self.buttonServerHistoryClear)
 
+        # Add OutgoingLayout
+        self.clientOutgoingLayout.addWidget(self.editorClientOutMessage, 0, 0,
+                                            1, 2)
+        self.clientOutgoingLayout.addWidget(self.labelClientSendInfo, 1, 0, 1,
+                                            1)
+        self.clientOutgoingLayout.addWidget(self.buttonClientSend, 1, 1, 1, 1)
+
+        self.serverOutgoingLayout.addWidget(self.editorServerOutMessage, 0, 0,
+                                            1, 2)
+        self.serverOutgoingLayout.addWidget(self.buttonServerListen, 1, 1, 1,
+                                            1)
+
         # DockWidget
         self.clientDockWidget = QDockWidget('Sending messages history',
                                             self.tabClient)
@@ -212,6 +234,16 @@ class Ui_MainWindow:
         self.serverDockWidget.setWidget(self.serverHistoryWidget)
         self.serverDockWidget.setFeatures(
             QDockWidget.DockWidgetFeature.NoDockWidgetFeatures)
+
+        # Splitters
+        self.clientEditorsSplitter = QSplitter(Qt.Orientation.Vertical)
+        self.clientEditorsSplitter.addWidget(self.clientOutgoingWidget)
+        self.clientEditorsSplitter.addWidget(self.editorClientInMessage)
+        
+        self.serverEditorsSplitter = QSplitter(Qt.Orientation.Vertical)
+        self.serverEditorsSplitter.addWidget(self.serverOutgoingWidget)
+        self.serverEditorsSplitter.addWidget(self.editorServerInMessage)
+        # self.clientEditorsSplitter.setHandleWidth(1)
 
         # Layout addWidgets
         self.centralLayout.addWidget(self.tabWidget)
@@ -232,14 +264,11 @@ class Ui_MainWindow:
         self.clientLayout.addWidget(self.buttonClientLoad, 0, 5, 1, 1)
         self.clientLayout.addWidget(self.buttonClientSave, 1, 5, 1, 1)
         self.clientLayout.addWidget(self.buttonClientClear, 2, 5, 1, 1)
-        self.clientLayout.addWidget(self.buttonClientSend, 4, 5, 1, 1)
 
-        self.clientLayout.addWidget(self.clientDockWidget, 0, 6, 7, 1)
+        self.clientLayout.addWidget(self.clientEditorsSplitter, 3, 0, 2, 6)
 
-        self.clientLayout.addWidget(self.editorClientOutMessage, 3, 0, 1, 6)
-        self.clientLayout.addWidget(self.editorClientInMessage, 5, 0, 2, 6)
-
-        self.clientLayout.addWidget(self.labelClientSendInfo, 4, 0, 1, 5)
+        self.clientLayout.addWidget(self.clientDockWidget, 0, 6, 5, 1)
+        # self.clientLayout.addWidget(self.editorClientInMessage, 4, 0, 1, 6)
 
         self.serverLayout.addWidget(self.labelServerIP, 0, 0, 1, 1)
         self.serverLayout.addWidget(self.labelServerPort, 1, 0, 1, 1)
@@ -249,13 +278,9 @@ class Ui_MainWindow:
         self.serverLayout.addWidget(self.inputServerPort, 1, 1, 1, 1)
         self.serverLayout.addWidget(self.inputServerClients, 2, 1, 1, 1)
 
-        self.serverLayout.addWidget(self.serverDockWidget, 0, 5, 7, 1)
+        self.serverLayout.addWidget(self.serverDockWidget, 0, 5, 4, 1)
 
-        self.serverLayout.addWidget(self.editorServerOutMessage, 3, 0, 1, 4)
-
-        self.serverLayout.addWidget(self.buttonServerListen, 4, 3, 1, 1)
-
-        self.serverLayout.addWidget(self.editorServerInMessage, 5, 0, 2, 4)
+        self.serverLayout.addWidget(self.serverEditorsSplitter, 3, 0, 1, 4)
 
         self.tabWidget.addTab(self.tabClient, 'CLIENT')
         self.tabWidget.addTab(self.tabServer, 'SERVER')

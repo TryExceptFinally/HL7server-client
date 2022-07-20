@@ -3,6 +3,10 @@
     color: white;
 }
 
+QSplitterHandle {
+    background: #060122;
+}
+
 QStatusBar {
     font: 13px;
 }
@@ -11,7 +15,7 @@ QDockWidget {
     color: white;
     font: bold 14px;
     background: #060122;
-    max-width: 340px;
+    max-width: 320px;
 }
 
 QDockWidget::title {

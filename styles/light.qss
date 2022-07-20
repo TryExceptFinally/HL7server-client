@@ -2,6 +2,10 @@
     background: white;
 }
 
+QSplitterHandle {
+    background: white;
+}
+
 QStatusBar {
     font: 13px;
 }
@@ -9,7 +13,7 @@ QStatusBar {
 QDockWidget {
     font: bold 14px;
     background: #060122;
-    max-width: 340px;
+    max-width: 320px;
 }
 
 QDockWidget::title {
