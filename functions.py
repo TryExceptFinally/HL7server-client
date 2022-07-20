@@ -60,4 +60,7 @@ def convertMessage(msg: str, code: str) -> bytes:
 
 
 def uconvertMessage(msg: bytes, code: str) -> str:
-    return msg.strip(first_sim + cr_sim + last_sim).decode(code)
+    try:
+        return msg.strip(first_sim + cr_sim + last_sim).decode(code)
+    except UnicodeDecodeError:
+        return 'UnicodeDecodeError'
