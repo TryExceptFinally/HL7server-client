@@ -17,10 +17,9 @@ QDockWidget {
 }
 
 QDockWidget::title {
-    background: #F1F1F2;
-    border: 1px solid #2496ED;
-    border-radius: 5px;
-    text-align: center;
+    background: white;
+    text-align: left;
+    padding: 0 15px;
 }
 
 QDockWidget::close-button {

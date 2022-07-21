@@ -115,19 +115,19 @@ class Ui_MainWindow:
 
         self.clientOutgoingWidget = QWidget(self.tabClient)
         self.clientOutgoingLayout = QGridLayout(self.clientOutgoingWidget)
-        self.clientOutgoingLayout.setContentsMargins(0, 0, 0, 0)
+        self.clientOutgoingLayout.setContentsMargins(0, 0, 0, 5)
 
         self.clientHistoryWidget = QWidget(self.tabClient)
         self.clientHistoryLayout = QGridLayout(self.clientHistoryWidget)
-        self.clientHistoryLayout.setContentsMargins(0, 6, 0, 0)
+        self.clientHistoryLayout.setContentsMargins(0, 1, 0, 0)
 
         self.serverOutgoingWidget = QWidget(self.tabServer)
         self.serverOutgoingLayout = QGridLayout(self.serverOutgoingWidget)
-        self.serverOutgoingLayout.setContentsMargins(0, 0, 0, 0)
+        self.serverOutgoingLayout.setContentsMargins(0, 0, 0, 5)
 
         self.serverHistoryWidget = QWidget(self.tabServer)
         self.serverHistoryLayout = QGridLayout(self.serverHistoryWidget)
-        self.serverHistoryLayout.setContentsMargins(0, 6, 0, 0)
+        self.serverHistoryLayout.setContentsMargins(0, 1, 0, 0)
 
         # Labels
         self.labelClientIP = QLabel('IP', self.tabClient)
@@ -239,11 +239,12 @@ class Ui_MainWindow:
         self.clientEditorsSplitter = QSplitter(Qt.Orientation.Vertical)
         self.clientEditorsSplitter.addWidget(self.clientOutgoingWidget)
         self.clientEditorsSplitter.addWidget(self.editorClientInMessage)
+        self.clientEditorsSplitter.setHandleWidth(1)
 
         self.serverEditorsSplitter = QSplitter(Qt.Orientation.Vertical)
         self.serverEditorsSplitter.addWidget(self.serverOutgoingWidget)
         self.serverEditorsSplitter.addWidget(self.editorServerInMessage)
-        # self.clientEditorsSplitter.setHandleWidth(1)
+        self.clientEditorsSplitter.setHandleWidth(1)
 
         # Layout addWidgets
         self.centralLayout.addWidget(self.tabWidget)
