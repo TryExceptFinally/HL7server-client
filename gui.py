@@ -240,11 +240,15 @@ class Ui_MainWindow:
         self.clientEditorsSplitter.addWidget(self.clientOutgoingWidget)
         self.clientEditorsSplitter.addWidget(self.editorClientInMessage)
         self.clientEditorsSplitter.setHandleWidth(1)
+        self.clientEditorsSplitter.setCollapsible(0, False)
+        self.clientEditorsSplitter.setCollapsible(1, False)
 
         self.serverEditorsSplitter = QSplitter(Qt.Orientation.Vertical)
         self.serverEditorsSplitter.addWidget(self.serverOutgoingWidget)
         self.serverEditorsSplitter.addWidget(self.editorServerInMessage)
-        self.clientEditorsSplitter.setHandleWidth(1)
+        self.serverEditorsSplitter.setHandleWidth(1)
+        self.serverEditorsSplitter.setCollapsible(0, False)
+        self.serverEditorsSplitter.setCollapsible(1, False)
 
         # Layout addWidgets
         self.centralLayout.addWidget(self.tabWidget)
