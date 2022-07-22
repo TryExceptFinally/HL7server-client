@@ -1,0 +1,92 @@
+QStatusBar {
+    font: 13px;
+}
+
+QDockWidget {
+    font: bold 14px;
+    max-width: 320px;
+}
+
+QDockWidget::title {
+    text-align: left;
+    padding: 0 15px;
+}
+
+QMenuBar::item {
+    background: transparent;
+}
+
+QPlainTextEdit {
+    font: bold 13px;
+    border-radius: 5px;
+    padding: 1 1px;
+}
+
+QLabel#statusLabel {
+    font: 14px;
+}
+
+QLabel#titleLabel {
+    font: bold 14px;
+    min-width: 5em;
+    max-width: 5em;
+    min-height: 1em;
+    padding: 0 10px;
+}
+
+QLineEdit { 
+    font: 15px;
+    border-radius: 5px; 
+    height: 1em;
+    min-width: 9em;
+    max-width: 9em;
+    padding: 3 3px;
+}
+
+QPushButton {
+    border-style: outset;
+    border-radius: 5px;
+    font: bold 14px;
+    min-width: 10em;
+    max-width: 320px;
+    height: 1em;
+    padding: 3 3px;
+}
+
+QPushButton:hover {
+    border-style: outset;
+}
+
+QPushButton:pressed {
+    border-style: inset;
+}
+
+QCheckBox {
+    width: 100px;
+}
+
+QTabWidget::pane {
+    border-radius: 5px;
+    border-top-left-radius: 0px;
+}
+
+QTabBar::tab {
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    padding: 0 10px;
+    font: bold 14px;
+}
+
+QTabBar::tab:!selected {
+    margin-top: 4px;
+}
+
+QCheckBox {
+    max-width: 5em;
+}
+
+QListWidget {
+    border-radius: 5px;
+    font: 16px;
+    min-width: 320px;
+}

@@ -45,6 +45,10 @@ class ClientHL7(TcpSocket):
 
 class ServerHL7(TcpSocket):
 
+    def __init__(self, host: str, port: int, code: str = 'utf-8'):
+        super().__init__(host, port, code)
+        self.ack = 'AA'
+
     def listen(self):
         print('[SERVER]: Start listen')
         inputs = [self.sock]
@@ -81,7 +85,9 @@ class ServerHL7(TcpSocket):
                 sockpeer = sock.getpeername()
                 print(f'[SERVER]: Write! {sock}')
                 date = datetime.now()
-                self.outMsg = fnc.genAnswerMessage(self.inMsg, self.code, date.strftime('%Y%m%d%H%M%S'))
+                self.outMsg = fnc.genAnswerMessage(
+                    self.inMsg, self.code, date.strftime('%Y%m%d%H%M%S'),
+                    self.ack)
                 self.write(sock, fnc.convertMessage(self.outMsg, self.code))
                 self.close(sock)
                 outputs.remove(sock)

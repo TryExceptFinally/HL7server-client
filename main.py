@@ -34,6 +34,8 @@ class MainWindow(QMainWindow):
             QIcon(resourcePath('images\\save.png')))
         self.ui.buttonClientClear.setIcon(
             QIcon(resourcePath('images\\delete.png')))
+        self.ui.buttonServerClear.setIcon(
+            QIcon(resourcePath('images\\delete.png')))
         self.ui.buttonClientHistoryClear.setIcon(
             QIcon(resourcePath('images\\clear.png')))
         self.ui.buttonServerHistoryClear.setIcon(
@@ -73,6 +75,7 @@ class MainWindow(QMainWindow):
         self.ui.buttonClientLoad.clicked.connect(lambda: self.clientLoad())
         self.ui.buttonClientSave.clicked.connect(lambda: self.clientSave())
         self.ui.buttonClientClear.clicked.connect(lambda: self.clientClear())
+        self.ui.buttonServerClear.clicked.connect(lambda: self.serverClear())
         self.ui.buttonClientSend.clicked.connect(
             lambda: self.clientSendMessage())
 
@@ -104,6 +107,8 @@ class MainWindow(QMainWindow):
 
         self.ui.actionSaveConfig.triggered.connect(lambda: self.configSave())
         self.ui.actionHelpAbout.triggered.connect(lambda: self.msgAbout())
+
+        self.ui.radioBtServerGroup.idClicked.connect(lambda: self.serverAck())
 
         self.serverThreadListen = SocketThread(self.serverStartListen)
         self.serverThreadListen.signals.finished.connect(self.serverStopListen)
@@ -144,8 +149,9 @@ class MainWindow(QMainWindow):
         self.ui.buttonServerHistoryClear.clicked.connect(
             lambda: self.clearItems(self.ui.listServerHistory, self.ui.
                                     buttonServerHistoryClear))
-
         self.loadStyle()
+        self.ui.buttonClientHistoryClear.setMaximumWidth(320)
+        self.ui.buttonServerHistoryClear.setMaximumWidth(320)
 
     # Root Events
     def closeEvent(self, event):
@@ -164,6 +170,7 @@ class MainWindow(QMainWindow):
         stylesheet = resourcePath(f'styles\\{style}.qss')
         with open(stylesheet, 'r') as ss:
             self.setStyleSheet(ss.read())
+            # self.setStyleSheet('color: red;')
             self.styleApp = style
 
     def cursorPosition(self):
@@ -294,6 +301,11 @@ class MainWindow(QMainWindow):
         self.ui.editorClientOutMessage.setPlainText('')
         self.ui.labelClientSendInfo.setText('')
         self.ui.statusBar.showMessage('Clear', 5000)
+        
+    def serverClear(self):
+        self.ui.editorServerInMessage.setPlainText('')
+        self.ui.editorServerOutMessage.setPlainText('')
+        self.ui.statusBar.showMessage('Clear', 5000)
 
     def clientSendMessage(self):
         if not client.run:
@@ -362,6 +374,10 @@ class MainWindow(QMainWindow):
         else:
             server.run = False
             server.close(server.sock)
+
+    def serverAck(self):
+        ack = self.ui.radioBtServerGroup.checkedButton().text()
+        server.ack = f'{ack:.2s}'
 
     def serverStartListen(self):
         while server.run:

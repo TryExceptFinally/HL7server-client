@@ -14,15 +14,15 @@ def transferToHL7(msg: str, code: str):
     return result
 
 
-def genAnswerMessage(msg: str, code: str, date: str) -> str:
+def genAnswerMessage(msg: str, code: str, date: str, ack: str) -> str:
     result = transferToHL7(msg, code)
     answer = ''
     try:
         result = parse(result)
         answer = f"MSH|^~\\&|{result['MSH'][0][5]}|{result['MSH'][0][6]}|{result['MSH'][0][3]}|{result['MSH'][0][4]}|{date}||ACK|||{result['MSH'][0][12]}\r"
-        answer += f"MSA|AA|{result['MSH'][0][10]}|Сообщение успешно получено\r"
+        answer += f"MSA|{ack}|{result['MSH'][0][10]}|Сообщение успешно получено\r"
     except Exception as exc:
-        print(f'[genAnswerMessage]: {exc}')
+        answer += f'[ERROR]: {exc}'
     finally:
         return answer
 

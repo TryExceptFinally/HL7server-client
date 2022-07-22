@@ -4,7 +4,7 @@ from PyQt6.QtWidgets import (QVBoxLayout, QPlainTextEdit, QPushButton, QLabel,
                              QLineEdit, QGridLayout, QWidget, QTabWidget,
                              QCheckBox, QListWidget, QStatusBar, QDockWidget,
                              QMenu, QMenuBar, QWidgetAction, QMessageBox,
-                             QSplitter)
+                             QSplitter, QRadioButton, QButtonGroup)
 
 
 class Ui_MainWindow:
@@ -176,9 +176,11 @@ class Ui_MainWindow:
                                                     self.clientHistoryWidget)
         self.buttonClientHistoryClear.setEnabled(False)
 
+        self.buttonServerClear = QPushButton('CLEAR', self.tabServer)
         self.buttonServerHistoryClear = QPushButton('CLEAR ALL',
                                                     self.serverHistoryWidget)
         self.buttonServerHistoryClear.setEnabled(False)
+
         self.buttonServerListen = QPushButton('START SERVER', self.tabServer)
 
         # Editors
@@ -194,6 +196,17 @@ class Ui_MainWindow:
         self.checkClientSpam = QCheckBox('SPAM', self.tabClient)
         self.checkClientRandom = QCheckBox('RANDOM', self.tabClient)
         self.checkClientAccNumber = QCheckBox('AN +1', self.tabClient)
+
+        # Radio Button group
+        self.radioBtServerAA = QRadioButton('AA - Accept', self.tabServer)
+        self.radioBtServerAA.setChecked(True)
+        self.radioBtServerAR = QRadioButton('AR - Reject', self.tabServer)
+        self.radioBtServerAE = QRadioButton('AE - Error', self.tabServer)
+
+        self.radioBtServerGroup = QButtonGroup(self.tabServer)
+        self.radioBtServerGroup.addButton(self.radioBtServerAA)
+        self.radioBtServerGroup.addButton(self.radioBtServerAR)
+        self.radioBtServerGroup.addButton(self.radioBtServerAE)
 
         #  History Widget
         self.listClientHistory = HistoryWidget(self.clientHistoryWidget)
@@ -283,9 +296,15 @@ class Ui_MainWindow:
         self.serverLayout.addWidget(self.inputServerPort, 1, 1, 1, 1)
         self.serverLayout.addWidget(self.inputServerClients, 2, 1, 1, 1)
 
-        self.serverLayout.addWidget(self.serverDockWidget, 0, 5, 4, 1)
+        self.serverLayout.addWidget(self.radioBtServerAA, 0, 2, 1, 1)
+        self.serverLayout.addWidget(self.radioBtServerAR, 1, 2, 1, 1)
+        self.serverLayout.addWidget(self.radioBtServerAE, 2, 2, 1, 1)
 
-        self.serverLayout.addWidget(self.serverEditorsSplitter, 3, 0, 1, 4)
+        self.serverLayout.addWidget(self.buttonServerClear, 2, 4, 1, 1)
+
+        self.serverLayout.addWidget(self.serverEditorsSplitter, 3, 0, 1, 5)
+
+        self.serverLayout.addWidget(self.serverDockWidget, 0, 5, 4, 1)
 
         self.tabWidget.addTab(self.tabClient, 'CLIENT')
         self.tabWidget.addTab(self.tabServer, 'SERVER')

@@ -1,6 +1,9 @@
+* {
+    color: white;
+}
+
 #MainWidget {
     background: #060122;
-    color: white;
 }
 
 QSplitterHandle {
@@ -12,7 +15,6 @@ QStatusBar {
 }
 
 QDockWidget {
-    color: white;
     font: bold 14px;
     background: #060122;
     max-width: 320px;
@@ -37,7 +39,6 @@ QDockWidget::close-button:hover {
 }
 
 QMenuBar {
-    color: white;
     background: #1f2b3a;
     border-bottom: 1px solid #3a5199;
 }
@@ -55,7 +56,6 @@ QMenuBar::item:pressed {
 }
 
 QMenu {
-    color: white;
     background: #1f2b3a;
     border: 1px solid #3a5199;
 }
@@ -65,7 +65,6 @@ QMenu::item:selected {
 }
 
 QPlainTextEdit {
-    color: white;
     selection-color: white;
     background: #1f2b3a;
     border: 1px solid #3a5199;
@@ -75,18 +74,15 @@ QPlainTextEdit {
 }
 
 QPlainTextEdit:read-only {
-    color: white;
     border: 1px solid gray;    
 }
 
 QLabel#statusLabel {
     font: 14px;
-    color: white;
 }
 
 QLabel#titleLabel {
     font: bold 14px;
-    color: white;
     min-width: 5em;
     max-width: 5em;
     min-height: 1em;
@@ -94,7 +90,6 @@ QLabel#titleLabel {
 }
 
 QLineEdit { 
-    color: white;
     background: #1f2b3a;
     font: 15px;
     border: 1px solid #3a5199;
@@ -110,14 +105,13 @@ QLineEdit:read-only {
 }
 
 QPushButton {
-    color: white;
     background: #3a5199;
     border: 1px solid #111bae;
     border-style: outset;
     border-radius: 5px;
     font: bold 14px;
     min-width: 10em;
-    max-width: 320px;
+    max-width: 180px;
     height: 1em;
     padding: 3 3px;
 }
@@ -139,10 +133,6 @@ QCheckBox {
     width: 100px;
 }
 
-QStatusBar {
-    color: white;
-}
-
 QTabWidget::pane {
     border: 1px solid #063852;
     border-radius: 5px;
@@ -150,7 +140,6 @@ QTabWidget::pane {
 }
 
 QTabBar::tab {
-    color: white;
     background: #3a5199; 
     border: 1px solid #063852;
     border-top-left-radius: 4px;
@@ -168,7 +157,6 @@ QTabBar::tab:!selected {
 }
 
 QCheckBox {
-    color: white;
     max-width: 5em;
 }
 
@@ -177,14 +165,9 @@ QListWidget {
     border-radius: 5px;
     border: 1px solid #3a5199;
     font: 16px;
-    color: white;
     min-width: 320px;
 }
 
 QMessageBox {
     background: #060122;
-}
-
-QMessageBox QLabel {
-    color: white;
 }
