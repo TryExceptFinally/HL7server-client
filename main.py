@@ -4,7 +4,7 @@ import os.path
 from gui import Ui_MainWindow
 from PyQt6.QtGui import QIcon, QTextOption
 from PyQt6.QtWidgets import QApplication, QMainWindow, QFileDialog, QListWidgetItem
-from PyQt6.QtCore import QThread, pyqtSignal, QObject
+from PyQt6.QtCore import QEvent, QThread, pyqtSignal, QObject
 
 from hl7socket import ClientHL7, ServerHL7
 from config import Config
@@ -71,6 +71,10 @@ class MainWindow(QMainWindow):
         self.ui.editorClientOutMessage.textChanged.connect(self.textChanged)
         self.ui.editorClientOutMessage.cursorPositionChanged.connect(
             self.cursorPosition)
+
+        self.ui.labelClientSendInfo.installEventFilter(self)
+        # self.ui.labelClientSendInfo.setClickable(True)
+        # self.ui.labelClientSendInfo.clicked.connect(lambda: print('12421'))
 
         self.ui.buttonClientLoad.clicked.connect(lambda: self.clientLoad())
         self.ui.buttonClientSave.clicked.connect(lambda: self.clientSave())
@@ -402,6 +406,13 @@ class MainWindow(QMainWindow):
         self.ui.statusBar.showMessage(result, 3000)
         self.ui.buttonServerListen.setText('START SERVER')
         self.ui.editorServerOutMessage.setReadOnly(False)
+
+    def eventFilter(self, source: 'QObject', event: 'QEvent') -> bool:
+        if event.type() == QEvent.Type.ContextMenu and (source is self.ui.labelClientSendInfo) and (self.ui.labelClientSendInfo.text() != ''):
+            if self.ui.menuClipboard.exec(event.globalPos()):
+                app.clipboard().setText(self.ui.labelClientSendInfo.text())
+            return True
+        return super().eventFilter(source, event)
 
 
 class DataItems(QListWidgetItem):

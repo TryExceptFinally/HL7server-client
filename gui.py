@@ -45,6 +45,10 @@ class Ui_MainWindow:
         self.menuStyles = QMenu('Styles', self.menuBar)
         self.menuHelp = QMenu('Help', self.menuBar)
 
+        # ContextMenu
+        self.menuClipboard = QMenu(self.centralWidget)
+        self.menuClipboard.addAction('Copy to clipboard')
+
         # Action Menu
         # File
         self.actionExitApp = QWidgetAction(self.menuBar)
@@ -74,10 +78,12 @@ class Ui_MainWindow:
         # Config
         self.actionSaveConfig = QWidgetAction(self.menuBar)
         self.actionSaveConfig.setText('Save Config')
+
         # WrapMode
         self.actionWrapMode = QWidgetAction(self.menuBar)
         self.actionWrapMode.setText('WrapMode')
         self.actionWrapMode.setCheckable(True)
+
         # Help
         self.actionHelpAbout = QWidgetAction(self.menuBar)
         self.actionHelpAbout.setText('About')
