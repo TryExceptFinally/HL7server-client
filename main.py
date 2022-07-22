@@ -301,7 +301,7 @@ class MainWindow(QMainWindow):
         self.ui.editorClientOutMessage.setPlainText('')
         self.ui.labelClientSendInfo.setText('')
         self.ui.statusBar.showMessage('Clear', 5000)
-        
+
     def serverClear(self):
         self.ui.editorServerInMessage.setPlainText('')
         self.ui.editorServerOutMessage.setPlainText('')
