@@ -60,13 +60,13 @@ class Config:
                                             fallback=self.clientRandom)
         self.clientAN = self.getboolean('Client', 'an', fallback=self.clientAN)
         self.clientHistory = self.getboolean('Client',
-                                             'history_hidden',
+                                             'history',
                                              fallback=self.clientHistory)
         self.serverPort = self.getint('Server',
                                       'port',
                                       fallback=self.serverPort)
         self.serverHistory = self.getboolean('Server',
-                                             'history_hidden',
+                                             'history',
                                              fallback=self.serverHistory)
         self.loadDir = self.getstring('Paths', 'load', fallback=self.loadDir)
         self.saveDir = self.getstring('Paths', 'save', fallback=self.saveDir)
@@ -84,11 +84,11 @@ class Config:
             'count_spam': self.clientCountSpam,
             'random': self.clientRandom,
             'an': self.clientAN,
-            'history_hidden': self.clientHistory
+            'history': self.clientHistory
         }
         self.config['Server'] = {
             'port': self.serverPort,
-            'history_hidden': self.serverHistory
+            'history': self.serverHistory
         }
         self.config['Paths'] = {'load': self.loadDir, 'save': self.saveDir}
         self.config['Settings'] = {

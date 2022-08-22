@@ -61,6 +61,10 @@ QMenu::item:selected {
     background: #2496ED;
 }
 
+QMenu::item:disabled {
+    color: gray;
+}
+
 QPlainTextEdit {
     background: #F1F1F2;
     border: 1px solid #2496ED;
@@ -91,7 +95,7 @@ QLineEdit {
     border: 1px solid #2496ED;
     border-radius: 5px; 
     height: 1em;
-    min-width: 9em;
+    min-width: 5em;
     max-width: 9em;
     padding: 3 3px;
 }
@@ -107,8 +111,8 @@ QPushButton {
     border-style: outset;
     border-radius: 5px;
     font: bold 14px;
-    min-width: 10em;
-    max-width: 180px;
+    min-width: 9em;
+    max-width: 9em;
     height: 1em;
     padding: 3 3px;
 }
@@ -160,5 +164,5 @@ QListWidget {
     border-radius: 5px;
     border: 1px solid #2496ED;
     font: 16px;
-    min-width: 320px;
+    min-width: 260px;
 }

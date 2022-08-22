@@ -65,8 +65,8 @@ class MainWindow(QMainWindow):
         self.loadDir = config.loadDir
         self.saveDir = config.saveDir
 
-        self.ui.clientDockWidget.setHidden(config.clientHistory)
-        self.ui.serverDockWidget.setHidden(config.serverHistory)
+        self.ui.clientDockWidget.setHidden(not config.clientHistory)
+        self.ui.serverDockWidget.setHidden(not config.serverHistory)
 
         self.ui.editorClientOutMessage.textChanged.connect(self.textChanged)
         self.ui.editorClientOutMessage.cursorPositionChanged.connect(
@@ -154,22 +154,25 @@ class MainWindow(QMainWindow):
             lambda: self.clearItems(self.ui.listServerHistory, self.ui.
                                     buttonServerHistoryClear))
         self.loadStyle()
-        self.ui.buttonClientHistoryClear.setMaximumWidth(320)
-        self.ui.buttonServerHistoryClear.setMaximumWidth(320)
 
     # Root Events
     def resizeEvent(self, event) -> None:
         # print(self.rect().height())
         width = self.rect().width()
-        if width < 1160:
+        if width < 920:
             self.ui.actionClientShowHistory.setEnabled(False)
+            self.ui.actionServerShowHistory.setEnabled(False)
             if not self.ui.clientDockWidget.isHidden():
                 self.ui.clientDockWidget.setHidden(True)
-        if width > 1160:
+            if not self.ui.serverDockWidget.isHidden():
+                self.ui.serverDockWidget.setHidden(True)
+        else:
             self.ui.actionClientShowHistory.setEnabled(True)
+            self.ui.actionServerShowHistory.setEnabled(True)
             if self.ui.actionClientShowHistory.isChecked():
                 self.ui.clientDockWidget.setHidden(False)
-            
+            if self.ui.actionServerShowHistory.isChecked():
+                self.ui.serverDockWidget.setHidden(False)
 
     def closeEvent(self, event) -> None:
         self.ui.settingsWindow.setValue('height', self.rect().height())
@@ -274,9 +277,9 @@ class MainWindow(QMainWindow):
         config.clientCountSpam = self.ui.inputClientCountSpam.text()
         config.clientRandom = self.ui.checkClientRandom.isChecked()
         config.clientAN = self.ui.checkClientAccNumber.isChecked()
-        config.clientHistory = self.ui.clientDockWidget.isHidden()
+        config.clientHistory = self.ui.actionClientShowHistory.isChecked()
         config.serverPort = self.ui.inputServerPort.text()
-        config.serverHistory = self.ui.serverDockWidget.isHidden()
+        config.serverHistory = self.ui.actionServerShowHistory.isChecked()
         config.loadDir = self.loadDir
         config.saveDir = self.saveDir
         config.style = self.styleApp

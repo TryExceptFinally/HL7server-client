@@ -11,7 +11,7 @@ class Ui_MainWindow:
 
     def setupUi(self, root):
         # Main Window
-        minWidth = 835
+        minWidth = 660
         minHeight = 600
         # root.setWindowTitle('HL7')
         # root.setObjectName('MainWindow')
@@ -223,11 +223,19 @@ class Ui_MainWindow:
         self.listServerHistory.setToolTip(toolTip)
 
         # Add history widget to Layout
-        self.clientHistoryLayout.addWidget(self.listClientHistory)
-        self.clientHistoryLayout.addWidget(self.buttonClientHistoryClear)
+        self.clientHistoryLayout.addWidget(self.listClientHistory, 0, 0)
+        self.clientHistoryLayout.addWidget(
+            self.buttonClientHistoryClear,
+            1,
+            0,
+            alignment=Qt.AlignmentFlag.AlignRight)
 
-        self.serverHistoryLayout.addWidget(self.listServerHistory)
-        self.serverHistoryLayout.addWidget(self.buttonServerHistoryClear)
+        self.serverHistoryLayout.addWidget(self.listServerHistory, 0, 0)
+        self.serverHistoryLayout.addWidget(
+            self.buttonServerHistoryClear,
+            1,
+            0,
+            alignment=Qt.AlignmentFlag.AlignRight)
 
         # Add OutgoingLayout
         self.clientOutgoingLayout.addWidget(self.editorClientOutMessage, 0, 0,
