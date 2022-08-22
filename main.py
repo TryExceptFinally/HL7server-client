@@ -65,9 +65,6 @@ class MainWindow(QMainWindow):
         self.loadDir = config.loadDir
         self.saveDir = config.saveDir
 
-        self.ui.clientDockWidget.setHidden(not config.clientHistory)
-        self.ui.serverDockWidget.setHidden(not config.serverHistory)
-
         self.ui.editorClientOutMessage.textChanged.connect(self.textChanged)
         self.ui.editorClientOutMessage.cursorPositionChanged.connect(
             self.cursorPosition)
@@ -87,17 +84,13 @@ class MainWindow(QMainWindow):
 
         self.ui.actionExitApp.triggered.connect(lambda: self.close())
 
-        self.ui.actionClientShowHistory.triggered.connect(
-            lambda: self.ui.clientDockWidget.setHidden(
-                not self.ui.clientDockWidget.isHidden()))
-        self.ui.actionClientShowHistory.setChecked(
-            not self.ui.clientDockWidget.isHidden())
+        self.ui.actionClientShowHistory.setChecked(config.clientHistory)
+        self.ui.actionClientShowHistory.triggered.connect(lambda: self.showHistory(self.ui.clientDockWidget, self.ui.actionClientShowHistory))
+            
 
-        self.ui.actionServerShowHistory.triggered.connect(
-            lambda: self.ui.serverDockWidget.setHidden(
-                not self.ui.serverDockWidget.isHidden()))
-        self.ui.actionServerShowHistory.setChecked(
-            not self.ui.serverDockWidget.isHidden())
+        self.ui.actionServerShowHistory.setChecked(config.serverHistory)
+        self.ui.actionServerShowHistory.triggered.connect(lambda: self.showHistory(self.ui.serverDockWidget, self.ui.actionServerShowHistory))
+            
 
         self.ui.actionWrapMode.triggered.connect(
             lambda: self.wrapModeChanged())
@@ -159,16 +152,12 @@ class MainWindow(QMainWindow):
     def resizeEvent(self, event) -> None:
         # print(self.rect().height())
         width = self.rect().width()
-        if width < 920:
-            self.ui.actionClientShowHistory.setEnabled(False)
-            self.ui.actionServerShowHistory.setEnabled(False)
+        if width < 880:
             if not self.ui.clientDockWidget.isHidden():
                 self.ui.clientDockWidget.setHidden(True)
             if not self.ui.serverDockWidget.isHidden():
                 self.ui.serverDockWidget.setHidden(True)
         else:
-            self.ui.actionClientShowHistory.setEnabled(True)
-            self.ui.actionServerShowHistory.setEnabled(True)
             if self.ui.actionClientShowHistory.isChecked():
                 self.ui.clientDockWidget.setHidden(False)
             if self.ui.actionServerShowHistory.isChecked():
@@ -225,6 +214,13 @@ class MainWindow(QMainWindow):
                                )
         self.ui.msgBox.setWindowTitle('HL7 CS')
         self.ui.msgBox.exec()
+
+    # showHistory
+    def showHistory(self, dockHistory, actionHistory):
+        checked = actionHistory.isChecked()
+        if checked and (self.rect().width() < 880):
+            self.resize(880, self.rect().height())
+        dockHistory.setHidden(not checked)
 
     # historyChanged
     def historyChanged(self, listHistory, buttonHistory):

@@ -87,10 +87,9 @@ QLabel#statusLabel {
 
 QLabel#titleLabel {
     font: bold 14px;
-    min-width: 5em;
-    max-width: 5em;
+    min-width: 3.5em;
+    max-width: 3.5em;
     min-height: 1em;
-    padding: 0 10px;
 }
 
 QLineEdit { 

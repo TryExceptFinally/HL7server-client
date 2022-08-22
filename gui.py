@@ -11,8 +11,8 @@ class Ui_MainWindow:
 
     def setupUi(self, root):
         # Main Window
-        minWidth = 660
-        minHeight = 350
+        minWidth = 610
+        minHeight = 355
         # root.setWindowTitle('HL7')
         # root.setObjectName('MainWindow')
         # root.setWindowFlags(Qt.WindowType.CustomizeWindowHint | Qt.WindowType.FramelessWindowHint)
@@ -255,12 +255,14 @@ class Ui_MainWindow:
         self.clientDockWidget.setWidget(self.clientHistoryWidget)
         self.clientDockWidget.setFeatures(
             QDockWidget.DockWidgetFeature.NoDockWidgetFeatures)
+        self.clientDockWidget.setHidden(True)
 
         self.serverDockWidget = QDockWidget('Received messages history',
                                             self.tabServer)
         self.serverDockWidget.setWidget(self.serverHistoryWidget)
         self.serverDockWidget.setFeatures(
             QDockWidget.DockWidgetFeature.NoDockWidgetFeatures)
+        self.serverDockWidget.setHidden(True)
 
         # Splitters
         self.clientEditorsSplitter = QSplitter(Qt.Orientation.Vertical)
