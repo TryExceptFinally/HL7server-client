@@ -12,7 +12,7 @@ class Ui_MainWindow:
     def setupUi(self, root):
         # Main Window
         minWidth = 660
-        minHeight = 600
+        minHeight = 350
         # root.setWindowTitle('HL7')
         # root.setObjectName('MainWindow')
         # root.setWindowFlags(Qt.WindowType.CustomizeWindowHint | Qt.WindowType.FramelessWindowHint)
