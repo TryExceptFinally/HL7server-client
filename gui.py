@@ -11,7 +11,7 @@ class Ui_MainWindow:
 
     def setupUi(self, root):
         # Main Window
-        minWidth = 1200
+        minWidth = 835
         minHeight = 600
         # root.setWindowTitle('HL7')
         # root.setObjectName('MainWindow')

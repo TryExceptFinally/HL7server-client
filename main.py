@@ -158,7 +158,20 @@ class MainWindow(QMainWindow):
         self.ui.buttonServerHistoryClear.setMaximumWidth(320)
 
     # Root Events
-    def closeEvent(self, event):
+    def resizeEvent(self, event) -> None:
+        # print(self.rect().height())
+        width = self.rect().width()
+        if width < 1160:
+            self.ui.actionClientShowHistory.setEnabled(False)
+            if not self.ui.clientDockWidget.isHidden():
+                self.ui.clientDockWidget.setHidden(True)
+        if width > 1160:
+            self.ui.actionClientShowHistory.setEnabled(True)
+            if self.ui.actionClientShowHistory.isChecked():
+                self.ui.clientDockWidget.setHidden(False)
+            
+
+    def closeEvent(self, event) -> None:
         self.ui.settingsWindow.setValue('height', self.rect().height())
         self.ui.settingsWindow.setValue('width', self.rect().width())
         self.configSave()
