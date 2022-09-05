@@ -24,7 +24,7 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
-        #  images
+        # images
         self.setWindowIcon(QIcon(resourcePath('ico.ico')))
         self.ui.buttonClientSend.setIcon(
             QIcon(resourcePath('images\\send.png')))
@@ -85,10 +85,12 @@ class MainWindow(QMainWindow):
         self.ui.actionExitApp.triggered.connect(lambda: self.close())
 
         self.ui.actionClientShowHistory.setChecked(config.clientHistory)
-        self.ui.actionClientShowHistory.triggered.connect(lambda: self.showHistory(self.ui.clientDockWidget, self.ui.actionClientShowHistory))
+        self.ui.actionClientShowHistory.triggered.connect(lambda: self.showHistory(
+            self.ui.clientDockWidget, self.ui.actionClientShowHistory))
 
         self.ui.actionServerShowHistory.setChecked(config.serverHistory)
-        self.ui.actionServerShowHistory.triggered.connect(lambda: self.showHistory(self.ui.serverDockWidget, self.ui.actionServerShowHistory))
+        self.ui.actionServerShowHistory.triggered.connect(lambda:  self.showHistory(
+            self.ui.serverDockWidget, self.ui.actionServerShowHistory))
 
         self.ui.actionWrapMode.triggered.connect(
             lambda: self.wrapModeChanged())
