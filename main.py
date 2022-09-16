@@ -1,17 +1,18 @@
 import sys
 import os.path
 
-from gui import Ui_MainWindow
 from PyQt6.QtGui import QIcon, QTextOption
 from PyQt6.QtWidgets import QApplication, QMainWindow, QFileDialog, QListWidgetItem
 from PyQt6.QtCore import QEvent, QThread, pyqtSignal, QObject
 
+from gui import Ui_MainWindow
 from hl7socket import ClientHL7, ServerHL7
 from config import Config
+from sysargs import SysArgs
 
 
 def resourcePath(relative):
-    if hasattr(sys, '_MEIPASS'):
+    if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
         return os.path.join(sys._MEIPASS, relative)
     else:
         return os.path.join(os.path.abspath("."), relative)
@@ -147,6 +148,9 @@ class MainWindow(QMainWindow):
             lambda: self.clearItems(self.ui.listServerHistory, self.ui.
                                     buttonServerHistoryClear))
         self.loadStyle()
+        
+        if args.start is not None:
+            self.clientSendMessage()
 
     # Root Events
     def resizeEvent(self, event) -> None:
@@ -453,15 +457,34 @@ class SocketThread(QThread):
         self.signals.finished.emit(result)
 
 
-config = Config('config.ini')
-config.load()
+if __name__ == '__main__':
+    config = Config('config.ini')
+    config.load()
+    
+    if len(sys.argv) > 1:
+        args = SysArgs()
+        args = args.parser.parse_args()
+        if args.ip is not None:
+            config.clientIP = args.ip
+        if args.port is not None:
+            config.clientPort = args.port
+        if args.timeout is not None:
+            config.clientTimeOut = args.timeout
+        if args.spam is not None:
+            config.clientSpam = args.spam
+            config.clientCountSpam = args.spam
+        if args.random is not None:
+            config.clientRandom = args.random
+        if args.accnumber is not None:
+            config.clientAN = args.accnumber
+            
+    client = ClientHL7(config.clientIP, config.clientPort,
+                       config.clientTimeOut)
+    server = ServerHL7('127.0.0.1', config.serverPort)
 
-client = ClientHL7(config.clientIP, config.clientPort, config.clientTimeOut)
-server = ServerHL7('127.0.0.1', config.serverPort)
+    app = QApplication(sys.argv)
+    root = MainWindow()
+    root.setWindowTitle('HL7 CS v' + app.applicationVersion())
+    root.show()
 
-app = QApplication(sys.argv)
-root = MainWindow()
-root.setWindowTitle('HL7 CS v' + app.applicationVersion())
-root.show()
-
-sys.exit(app.exec())
+    sys.exit(app.exec())
