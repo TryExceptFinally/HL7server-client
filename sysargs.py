@@ -20,6 +20,8 @@ class SysArgs():
             self.parser.add_argument(
                 '-a', '--accnumber', type=bool, action=argparse.BooleanOptionalAction, help='Accession number +1', metavar='')
             self.parser.add_argument(
+                '-fp', '--filepath', type=str, help='Path to HL7 file', metavar='')
+            self.parser.add_argument(
                 '--start', type=bool, action=argparse.BooleanOptionalAction, help='Run test after program start', metavar='')
         except argparse.ArgumentError or argparse.ArgumentTypeError as err:
             print(f'[HL7]: {err}')

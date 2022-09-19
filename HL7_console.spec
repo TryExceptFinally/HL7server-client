@@ -11,7 +11,8 @@ added_files = [
     ('images\\clear.png', 'images'),
     ('images\\delete.png', 'images'),
     ('images\\listen.png', 'images'),
-    ('styles\\style_gui.qss', 'styles')
+    ('styles\\dark.qss', 'styles'),
+    ('styles\\light.qss', 'styles')
     ]
 
 a = Analysis(
@@ -52,4 +53,5 @@ exe = EXE(
     codesign_identity=None,
     entitlements_file=None,
     icon='images\\ico.ico',
+    version='version.txt'
 )

@@ -148,8 +148,12 @@ class MainWindow(QMainWindow):
             lambda: self.clearItems(self.ui.listServerHistory, self.ui.
                                     buttonServerHistoryClear))
         self.loadStyle()
-        
-        if args.start is not None:
+
+        if loadPathCMD:
+            self.loadDir = loadPathCMD
+            self.loadFile()
+
+        if loadStartCMD:
             self.clientSendMessage()
 
     # Root Events
@@ -284,7 +288,17 @@ class MainWindow(QMainWindow):
         config.saveDir = self.saveDir
         config.style = self.styleApp
         config.save()
-        print('[CONFIG]: Config save')
+        print('[CONFIG]: Config saved')
+
+    def loadFile(self):
+        try:
+            with open(self.loadDir, encoding=client.code, mode='r') as f:
+                data = f.read()
+                self.ui.editorClientOutMessage.setPlainText(data)
+                self.ui.statusBar.showMessage(
+                    f'File: "{self.loadDir}" loaded.')
+        except Exception as exp:
+            print(exp)
 
     def clientLoad(self):
         file = QFileDialog.getOpenFileName(self, 'Load HL7 message',
@@ -293,11 +307,14 @@ class MainWindow(QMainWindow):
         if not file:
             return
         self.loadDir = file
-        self.ui.statusBar.showMessage(f'File: "{self.loadDir}" loaded.')
+        self.loadFile()
+
+    def saveFile(self):
         try:
-            with open(file, encoding=client.code, mode='r') as f:
-                data = f.read()
-                self.ui.editorClientOutMessage.setPlainText(data)
+            with open(self.saveDir, encoding=client.code, mode='w') as f:
+                data = self.ui.editorClientOutMessage.toPlainText()
+                f.write(data)
+                self.ui.statusBar.showMessage(f'File: "{self.saveDir}" saved.')
         except Exception as exp:
             print(exp)
 
@@ -308,13 +325,7 @@ class MainWindow(QMainWindow):
         if not file:
             return
         self.saveDir = file
-        self.ui.statusBar.showMessage(f'File: "{self.saveDir}" saved.')
-        try:
-            with open(file, encoding=client.code, mode='w') as f:
-                data = self.ui.editorClientOutMessage.toPlainText()
-                f.write(data)
-        except Exception as exp:
-            print(exp)
+        self.saveFile()
 
     def clientClear(self):
         self.ui.editorClientInMessage.setPlainText('')
@@ -460,7 +471,8 @@ class SocketThread(QThread):
 if __name__ == '__main__':
     config = Config('config.ini')
     config.load()
-    
+    loadPathCMD = ''
+    loadStartCMD = False
     if len(sys.argv) > 1:
         args = SysArgs()
         args = args.parser.parse_args()
@@ -477,14 +489,21 @@ if __name__ == '__main__':
             config.clientRandom = args.random
         if args.accnumber is not None:
             config.clientAN = args.accnumber
-            
+        if args.filepath is not None:
+            if os.path.exists(args.filepath):
+                loadPathCMD = args.filepath
+        if args.start is not None:
+            loadStartCMD = args.start
+        args = None
+
     client = ClientHL7(config.clientIP, config.clientPort,
                        config.clientTimeOut)
     server = ServerHL7('127.0.0.1', config.serverPort)
-
+    
     app = QApplication(sys.argv)
     root = MainWindow()
     root.setWindowTitle('HL7 CS v' + app.applicationVersion())
-    root.show()
+    if not loadStartCMD:
+        root.show()
 
     sys.exit(app.exec())
