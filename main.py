@@ -503,7 +503,7 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     root = MainWindow()
     root.setWindowTitle('HL7 CS v' + app.applicationVersion())
-    if not loadStartCMD:
-        root.show()
+    #if not loadStartCMD:
+    root.show()
 
     sys.exit(app.exec())
