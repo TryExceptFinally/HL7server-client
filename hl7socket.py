@@ -21,7 +21,7 @@ class ClientHL7(TcpSocket):
             tRecvEnd = 0.0
             if not self.run:
                 return '', tSendEnd, tRecvEnd
-            print('[CLIENT]: Message sending start')
+            # print('[CLIENT]: Message sending start')
             error = self.createClient(self.timeout)
             if error:
                 return 'ERROR', tSendEnd, tRecvEnd
@@ -32,10 +32,10 @@ class ClientHL7(TcpSocket):
             data = fnc.convertMessage(self.outMsg, self.code)
             self.write(self.sock, data)
             tSendEnd = perf_counter() - t_start
-            print(f'[CLIENT]: Message sent for {tSendEnd}')
+            # print(f'[CLIENT]: Message sent for {tSendEnd}')
             data = self.read(self.sock, peek=True)
             tRecvEnd = perf_counter() - t_start - tSendEnd
-            print(f'[CLIENT]: Answer received for {tRecvEnd}')
+            # print(f'[CLIENT]: Answer received for {tRecvEnd}')
             self.inMsg = fnc.uconvertMessage(data, self.code)
             self.close(self.sock)
             return f"{datetime.now().strftime('%H:%M:%S')}", tSendEnd, tRecvEnd

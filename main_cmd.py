@@ -33,7 +33,7 @@ class Spamer():
         client.run = False
 
 
-if __name__ == '__main__':
+if __name__ == '__main__': 
     args = SysArgs()
     args = args.parser.parse_args()
     if not os.path.exists(args.filepath):
