@@ -1,5 +1,6 @@
 import os.path
 import sys
+import signal
 
 from sysargs import SysArgs
 from hl7socket import ClientHL7
@@ -23,15 +24,18 @@ class Spamer():
         client.outMsg = self.loadMsg()
         tAllRecv = 0.0
         countMsg = 0
-        while countMsg < self.spam:
+        while (countMsg < self.spam) and client.run:
             countMsg += 1
             timeMsg, tSendEnd, tRecvEnd = client.sendHL7()
             tAllRecv += tRecvEnd
-            print(f'[{timeMsg}] №{countMsg}, Sending: {tSendEnd:.5f}, Received: {tRecvEnd:.5f}')
+            print(f'[{timeMsg}] Message №{countMsg}, Sending: {tSendEnd:.5f}, Received: {tRecvEnd:.5f}')
         print(
             f'Average time received {countMsg} messages: {tAllRecv/countMsg:.5f}')
         client.run = False
 
+def sigint_handler(signal, frame):
+    # print('Start stopping service...')
+    client.run = False
 
 if __name__ == '__main__': 
     args = SysArgs()
@@ -44,4 +48,5 @@ if __name__ == '__main__':
     client.random = args.random
     spamer = Spamer(args.filepath, args.spam)
     args = None
+    signal.signal(signal.SIGINT, sigint_handler)
     spamer.start()

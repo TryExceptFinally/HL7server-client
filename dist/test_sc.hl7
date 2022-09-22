@@ -1,0 +1,8 @@
+MSH|^~\&|PACS|LINS_OFFICE|HL7SERVER|LINS|20220922165656||ORU^R01|44656.7062062153|P|2.3||||||UTF-8
+PID|||||ХУДАВЕРДИЕВА^Л^Г||20140816|M|||^^^^^^City: Street: bldg: apt:
+PV1
+ORC|SC||||IP||||||||||||МБУЗ ``Крымская ЦРБ``|18-15505
+OBR||||3490^^CHEST|||||||||\E\||||||DX|||||PROGRAF
+OBX|1|||||||||||||||\E\
+NTE|||\S\\S\ \S\\S\I-VII ребра\S\\S\Мед. осмотр
+ZDS|1.2.9.2.6.1.192.168.1.20.16838.20220405164554.6967^^Application^DICOM^||20220922164725||https://pacs-crb-krm.miackuban.ru/view.html?s=gtotjs3JInirJaal
