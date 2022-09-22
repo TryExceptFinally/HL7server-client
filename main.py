@@ -5,17 +5,9 @@ from PyQt6.QtGui import QIcon, QTextOption
 from PyQt6.QtWidgets import QApplication, QMainWindow, QFileDialog, QListWidgetItem
 from PyQt6.QtCore import QEvent, QThread, pyqtSignal, QObject
 
-from gui import Ui_MainWindow
-from hl7socket import ClientHL7, ServerHL7
+from gui_elements import Ui_MainWindow
 from config import Config
-from sysargs import SysArgs
-
-
-def resourcePath(relative):
-    if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
-        return os.path.join(sys._MEIPASS, relative)
-    else:
-        return os.path.join(os.path.abspath("."), relative)
+from hl7socket import ClientHL7, ServerHL7
 
 
 class MainWindow(QMainWindow):
@@ -148,13 +140,6 @@ class MainWindow(QMainWindow):
             lambda: self.clearItems(self.ui.listServerHistory, self.ui.
                                     buttonServerHistoryClear))
         self.loadStyle()
-
-        if loadPathCMD:
-            self.loadDir = loadPathCMD
-            self.loadFile()
-
-        if loadStartCMD:
-            self.clientSendMessage()
 
     # Root Events
     def resizeEvent(self, event) -> None:
@@ -468,42 +453,24 @@ class SocketThread(QThread):
         self.signals.finished.emit(result)
 
 
+def resourcePath(relative):
+    if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
+        return os.path.join(sys._MEIPASS, relative)
+    else:
+        return os.path.join(os.path.abspath("."), relative)
+
+
 if __name__ == '__main__':
     config = Config('config.ini')
     config.load()
-    loadPathCMD = ''
-    loadStartCMD = False
-    if len(sys.argv) > 1:
-        args = SysArgs()
-        args = args.parser.parse_args()
-        if args.ip is not None:
-            config.clientIP = args.ip
-        if args.port is not None:
-            config.clientPort = args.port
-        if args.timeout is not None:
-            config.clientTimeOut = args.timeout
-        if args.spam is not None:
-            config.clientSpam = args.spam
-            config.clientCountSpam = args.spam
-        if args.random is not None:
-            config.clientRandom = args.random
-        if args.accnumber is not None:
-            config.clientAN = args.accnumber
-        if args.filepath is not None:
-            if os.path.exists(args.filepath):
-                loadPathCMD = args.filepath
-        if args.start is not None:
-            loadStartCMD = args.start
-        args = None
 
     client = ClientHL7(config.clientIP, config.clientPort,
                        config.clientTimeOut)
     server = ServerHL7('127.0.0.1', config.serverPort)
-    
+
     app = QApplication(sys.argv)
     root = MainWindow()
     root.setWindowTitle('HL7 CS v' + app.applicationVersion())
-    if not loadStartCMD:
-        root.show()
+    root.show()
 
     sys.exit(app.exec())

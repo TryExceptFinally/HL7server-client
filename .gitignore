@@ -4,3 +4,4 @@ __pycache__/*
 version*
 config.ini
 dist/config.ini
+HL7_console.spec
