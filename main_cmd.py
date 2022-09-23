@@ -38,9 +38,9 @@ class Spamer():
             print(
                 f'[{timeMsg}] Message №{countMsg}, Sending: {tSendEnd:.5f}, Receiving: {tRecvEnd:.5f}'
             )
-            print('-' * 50)
+            print('-' * 60)
             print(client.inMsg.replace('\r', '\n'))
-            print('-' * 50)
+            print('-' * 60)
         print(
             f'Time receiving {countMsg} messages - Min: {minRecv:.5f}, Average: {tAllRecv/countMsg:.5f}, Max: {maxRecv:.5f}'
         )
