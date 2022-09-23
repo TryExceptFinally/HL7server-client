@@ -29,6 +29,7 @@ class Spamer():
             timeMsg, tSendEnd, tRecvEnd = client.sendHL7()
             tAllRecv += tRecvEnd
             print(f'[{timeMsg}] Message №{countMsg}, Sending: {tSendEnd:.5f}, Received: {tRecvEnd:.5f}')
+            print(client.inMsg)
         print(
             f'Average time received {countMsg} messages: {tAllRecv/countMsg:.5f}')
         client.run = False
