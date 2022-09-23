@@ -31,6 +31,7 @@ class Spamer():
             countMsg += 1
             timeMsg, tSendEnd, tRecvEnd = client.sendHL7()
             tAllRecv += tRecvEnd
+<<<<<<< HEAD
             if maxRecv < tRecvEnd:
                 maxRecv = tRecvEnd
             if minRecv > tRecvEnd:
@@ -42,6 +43,10 @@ class Spamer():
             print('-' * 50)
             print(client.inMsg.replace('\r', '\n'))
             print('-' * 50)
+=======
+            print(f'[{timeMsg}] Message №{countMsg}, Sending: {tSendEnd:.5f}, Received: {tRecvEnd:.5f}')
+            print(client.inMsg)
+>>>>>>> fdaed858da801c528595530648204922e50d33dd
         print(
             f'Time receiving {countMsg} messages - Min: {minRecv:.5f}, Average: {tAllRecv/countMsg:.5f}, Max: {maxRecv:.5f}'
         )
