@@ -30,7 +30,7 @@ class ClientHL7(TcpSocket):
             time_stamp = ''
             if self.random:
                 time_stamp = str(t_start)
-            current_time = ''
+            cur_time = ''
             if self.curTime:
                 cur_time = datetime.now().strftime('%Y%m%d%H%M%S')
             self.outMsg = fnc.genSendingMessage(self.outMsg, self.code, time_stamp, self.accNumber, cur_time)
