@@ -14,6 +14,7 @@ class ClientHL7(TcpSocket):
         self.timeout = timeout
         self.random = False
         self.accNumber = False
+        self.curTime = False
 
     def sendHL7(self):
         try:
@@ -26,9 +27,13 @@ class ClientHL7(TcpSocket):
             if error:
                 return 'ERROR', tSendEnd, tRecvEnd
             t_start = perf_counter()
-            self.outMsg = fnc.genSendingMessage(self.outMsg, self.code,
-                                                self.random, self.accNumber,
-                                                str(t_start))
+            time_stamp = ''
+            if self.random:
+                time_stamp = str(t_start)
+            current_time = ''
+            if self.curTime:
+                cur_time = datetime.now().strftime('%Y%m%d%H%M%S')
+            self.outMsg = fnc.genSendingMessage(self.outMsg, self.code, time_stamp, self.accNumber, cur_time)
             data = fnc.convertMessage(self.outMsg, self.code)
             self.write(self.sock, data)
             tSendEnd = perf_counter() - t_start
@@ -52,7 +57,7 @@ class ServerHL7(TcpSocket):
     def listen(self):
         print('[SERVER]: Start listen')
         inputs = [self.sock]
-        #self.sock.getpeername()
+        # self.sock.getpeername()
         outputs = []
         while inputs:
             rlist, wlist, xlist = select.select(inputs, outputs, inputs)

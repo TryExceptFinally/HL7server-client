@@ -13,6 +13,7 @@ class Config:
         self.clientCountSpam: int = 0
         self.clientRandom: bool = False
         self.clientAN: bool = False
+        self.clientCurrentTime: bool = False
         self.clientHistory: bool = False
         self.serverPort: int = 6005
         self.serverHistory: bool = False
@@ -43,36 +44,19 @@ class Config:
     def load(self):
         self.config.read(self.ini)
         self.clientIP = self.getstring('Client', 'ip', fallback=self.clientIP)
-        self.clientPort = self.getint('Client',
-                                      'port',
-                                      fallback=self.clientPort)
-        self.clientTimeOut = self.getint('Client',
-                                         'timeout',
-                                         fallback=self.clientTimeOut)
-        self.clientSpam = self.getboolean('Client',
-                                          'spam',
-                                          fallback=self.clientSpam)
-        self.clientCountSpam = self.getint('Client',
-                                           'count_spam',
-                                           fallback=self.clientCountSpam)
-        self.clientRandom = self.getboolean('Client',
-                                            'random',
-                                            fallback=self.clientRandom)
+        self.clientPort = self.getint('Client', 'port', fallback=self.clientPort)
+        self.clientTimeOut = self.getint('Client', 'timeout', fallback=self.clientTimeOut)
+        self.clientSpam = self.getboolean('Client', 'spam', fallback=self.clientSpam)
+        self.clientCountSpam = self.getint('Client', 'count_spam', fallback=self.clientCountSpam)
+        self.clientRandom = self.getboolean('Client', 'random', fallback=self.clientRandom)
         self.clientAN = self.getboolean('Client', 'an', fallback=self.clientAN)
-        self.clientHistory = self.getboolean('Client',
-                                             'history',
-                                             fallback=self.clientHistory)
-        self.serverPort = self.getint('Server',
-                                      'port',
-                                      fallback=self.serverPort)
-        self.serverHistory = self.getboolean('Server',
-                                             'history',
-                                             fallback=self.serverHistory)
+        self.clientCurrentTime = self.getboolean('Client', 'time', fallback=self.clientCurrentTime)
+        self.clientHistory = self.getboolean('Client', 'history', fallback=self.clientHistory)
+        self.serverPort = self.getint('Server', 'port', fallback=self.serverPort)
+        self.serverHistory = self.getboolean('Server', 'history', fallback=self.serverHistory)
         self.loadDir = self.getstring('Paths', 'load', fallback=self.loadDir)
         self.saveDir = self.getstring('Paths', 'save', fallback=self.saveDir)
-        self.wrapMode = self.getboolean('Settings',
-                                        'wrapmode',
-                                        fallback=self.wrapMode)
+        self.wrapMode = self.getboolean('Settings', 'wrapmode', fallback=self.wrapMode)
         self.style = self.getstring('Settings', 'style', fallback=self.style)
 
     def save(self):
@@ -84,6 +68,7 @@ class Config:
             'count_spam': self.clientCountSpam,
             'random': self.clientRandom,
             'an': self.clientAN,
+            'time': self.clientCurrentTime,
             'history': self.clientHistory
         }
         self.config['Server'] = {

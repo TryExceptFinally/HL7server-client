@@ -178,30 +178,28 @@ class Ui_MainWindow:
         self.buttonClientSave = QPushButton('SAVE FILE', self.tabClient)
         self.buttonClientSave.setEnabled(False)
         self.buttonClientClear = QPushButton('CLEAR', self.tabClient)
-        self.buttonClientHistoryClear = QPushButton('CLEAR ALL',
-                                                    self.clientHistoryWidget)
+        self.buttonClientHistoryClear = QPushButton('CLEAR ALL', self.clientHistoryWidget)
         self.buttonClientHistoryClear.setEnabled(False)
 
         self.buttonServerClear = QPushButton('CLEAR', self.tabServer)
-        self.buttonServerHistoryClear = QPushButton('CLEAR ALL',
-                                                    self.serverHistoryWidget)
+        self.buttonServerHistoryClear = QPushButton('CLEAR ALL', self.serverHistoryWidget)
         self.buttonServerHistoryClear.setEnabled(False)
 
         self.buttonServerListen = QPushButton('START SERVER', self.tabServer)
 
         # Editors
         self.editorClientOutMessage = QPlainTextEdit(self.tabClient)
-        self.editorClientOutMessage.setPlaceholderText(
-            'Enter/upload outgoing message')
+        self.editorClientOutMessage.setPlaceholderText('Enter/upload outgoing message')
         self.editorClientInMessage = QPlainTextEdit(self.tabClient)
 
         self.editorServerOutMessage = QPlainTextEdit(self.tabServer)
         self.editorServerInMessage = QPlainTextEdit(self.tabServer)
 
         # CheckBox
-        self.checkClientSpam = QCheckBox('SPAM', self.tabClient)
-        self.checkClientRandom = QCheckBox('RANDOM', self.tabClient)
+        self.checkClientSpam = QCheckBox('Spam', self.tabClient)
+        self.checkClientRandom = QCheckBox('Random', self.tabClient)
         self.checkClientAccNumber = QCheckBox('AN +1', self.tabClient)
+        self.checkClientCurrentTime = QCheckBox('Time', self.tabClient)
 
         # Radio Button group
         self.radioBtServerAA = QRadioButton('AA - Accept', self.tabServer)
@@ -224,44 +222,27 @@ class Ui_MainWindow:
 
         # Add history widget to Layout
         self.clientHistoryLayout.addWidget(self.listClientHistory, 0, 0)
-        self.clientHistoryLayout.addWidget(
-            self.buttonClientHistoryClear,
-            1,
-            0,
-            alignment=Qt.AlignmentFlag.AlignRight)
+        self.clientHistoryLayout.addWidget(self.buttonClientHistoryClear, 1, 0, alignment=Qt.AlignmentFlag.AlignRight)
 
         self.serverHistoryLayout.addWidget(self.listServerHistory, 0, 0)
-        self.serverHistoryLayout.addWidget(
-            self.buttonServerHistoryClear,
-            1,
-            0,
-            alignment=Qt.AlignmentFlag.AlignRight)
+        self.serverHistoryLayout.addWidget(self.buttonServerHistoryClear, 1, 0, alignment=Qt.AlignmentFlag.AlignRight)
 
         # Add OutgoingLayout
-        self.clientOutgoingLayout.addWidget(self.editorClientOutMessage, 0, 0,
-                                            1, 2)
-        self.clientOutgoingLayout.addWidget(self.labelClientSendInfo, 1, 0, 1,
-                                            1)
+        self.clientOutgoingLayout.addWidget(self.editorClientOutMessage, 0, 0, 1, 2)
+        self.clientOutgoingLayout.addWidget(self.labelClientSendInfo, 1, 0, 1, 1)
         self.clientOutgoingLayout.addWidget(self.buttonClientSend, 1, 1, 1, 1)
-
-        self.serverOutgoingLayout.addWidget(self.editorServerOutMessage, 0, 0,
-                                            1, 2)
-        self.serverOutgoingLayout.addWidget(self.buttonServerListen, 1, 1, 1,
-                                            1)
+        self.serverOutgoingLayout.addWidget(self.editorServerOutMessage, 0, 0, 1, 2)
+        self.serverOutgoingLayout.addWidget(self.buttonServerListen, 1, 1, 1, 1)
 
         # DockWidget
-        self.clientDockWidget = QDockWidget('Sending messages history',
-                                            self.tabClient)
+        self.clientDockWidget = QDockWidget('Sending messages history', self.tabClient)
         self.clientDockWidget.setWidget(self.clientHistoryWidget)
-        self.clientDockWidget.setFeatures(
-            QDockWidget.DockWidgetFeature.NoDockWidgetFeatures)
+        self.clientDockWidget.setFeatures(QDockWidget.DockWidgetFeature.NoDockWidgetFeatures)
         self.clientDockWidget.setHidden(True)
 
-        self.serverDockWidget = QDockWidget('Received messages history',
-                                            self.tabServer)
+        self.serverDockWidget = QDockWidget('Received messages history', self.tabServer)
         self.serverDockWidget.setWidget(self.serverHistoryWidget)
-        self.serverDockWidget.setFeatures(
-            QDockWidget.DockWidgetFeature.NoDockWidgetFeatures)
+        self.serverDockWidget.setFeatures(QDockWidget.DockWidgetFeature.NoDockWidgetFeatures)
         self.serverDockWidget.setHidden(True)
 
         # Splitters
@@ -293,7 +274,8 @@ class Ui_MainWindow:
 
         self.clientLayout.addWidget(self.checkClientSpam, 0, 2, 1, 1)
         self.clientLayout.addWidget(self.checkClientRandom, 1, 2, 1, 1)
-        self.clientLayout.addWidget(self.checkClientAccNumber, 2, 2, 1, 1)
+        self.clientLayout.addWidget(self.checkClientAccNumber, 1, 3, 1, 1)
+        self.clientLayout.addWidget(self.checkClientCurrentTime, 2, 2, 1, 1)
 
         self.clientLayout.addWidget(self.buttonClientLoad, 0, 5, 1, 1)
         self.clientLayout.addWidget(self.buttonClientSave, 1, 5, 1, 1)

@@ -54,6 +54,7 @@ class MainWindow(QMainWindow):
         self.ui.checkClientSpam.setChecked(config.clientSpam)
         self.ui.checkClientRandom.setChecked(config.clientRandom)
         self.ui.checkClientAccNumber.setChecked(config.clientAN)
+        self.ui.checkClientCurrentTime.setChecked(config.clientCurrentTime)
 
         self.loadDir = config.loadDir
         self.saveDir = config.saveDir
@@ -266,6 +267,7 @@ class MainWindow(QMainWindow):
         config.clientCountSpam = self.ui.inputClientCountSpam.text()
         config.clientRandom = self.ui.checkClientRandom.isChecked()
         config.clientAN = self.ui.checkClientAccNumber.isChecked()
+        config.clientCurrentTime = self.ui.checkClientCurrentTime.isChecked()
         config.clientHistory = self.ui.actionClientShowHistory.isChecked()
         config.serverPort = self.ui.inputServerPort.text()
         config.serverHistory = self.ui.actionServerShowHistory.isChecked()
@@ -332,6 +334,7 @@ class MainWindow(QMainWindow):
             client.port = int(self.ui.inputClientPort.text())
             client.timeout = int(self.ui.inputClientTimeout.text())
             client.accNumber = self.ui.checkClientAccNumber.isChecked()
+            client.curTime = self.ui.checkClientCurrentTime.isChecked()
             client.random = self.ui.checkClientRandom.isChecked()
             self.clientThreadSending.start()
             self.ui.statusBar.showMessage('Sending...')

@@ -61,6 +61,7 @@ if __name__ == '__main__':
     client = ClientHL7(args.ip, args.port, args.timeout)
     client.accNumber = args.accnumber
     client.random = args.random
+    client.curTime = args.curtime
     spamer = Spamer(args.filepath, args.spam)
     args = None
     signal.signal(signal.SIGINT, sigint_handler)
