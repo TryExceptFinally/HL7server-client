@@ -54,7 +54,7 @@ def genSendingMessage(msg: str,
                     result['ORC'][0][2] = time_stamp
                 if cur_time:
                     result['MSH'][0][7] = cur_time
-                    result['OBR'][0][27] = cur_time
+                    result['OBR'][0][27][0][0][0] = cur_time
         except Exception as exc:
             result = exc
         finally:
