@@ -1,10 +1,10 @@
 from PyQt6.QtCore import Qt, QSettings
-from PyQt6.QtGui import QIntValidator, QKeyEvent, QActionGroup
+from PyQt6.QtGui import QIntValidator, QKeyEvent, QActionGroup, QAction
 from PyQt6.QtWidgets import (QVBoxLayout, QPlainTextEdit, QPushButton, QLabel,
                              QLineEdit, QGridLayout, QWidget, QTabWidget,
                              QCheckBox, QListWidget, QStatusBar, QDockWidget,
                              QMenu, QMenuBar, QWidgetAction, QMessageBox,
-                             QSplitter, QRadioButton, QButtonGroup)
+                             QSplitter, QRadioButton, QButtonGroup, QComboBox)
 
 
 class Ui_MainWindow:
@@ -155,7 +155,19 @@ class Ui_MainWindow:
         # LineEdit
         onlyInt = QIntValidator()
 
-        self.inputClientIP = QLineEdit(self.tabClient)
+        # self.inputClientIP = QLineEdit(self.tabClient)
+        self.cboxClientHosts = QComboBox(self.tabClient, editable=True)
+        self.cboxClientHosts.setInsertPolicy(QComboBox.InsertPolicy.InsertAtTop)
+        self.cboxClientHosts.setMaxCount(10)
+        self.cboxClientHosts.lineEdit().setMaxLength(30)
+        self.cboxClientHosts.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+
+        self.menuCboxClientHosts = QMenu(self.cboxClientHosts)
+
+        self.actionDeleteHost = QAction("Delete", self.menuCboxClientHosts)
+
+        self.menuCboxClientHosts.addAction(self.actionDeleteHost)
+
         self.inputClientPort = QLineEdit(self.tabClient)
         self.inputClientPort.setValidator(onlyInt)
         self.inputClientPort.setMaxLength(5)
@@ -267,7 +279,7 @@ class Ui_MainWindow:
         self.clientLayout.addWidget(self.labelClientPort, 1, 0, 1, 1)
         self.clientLayout.addWidget(self.labelClientTimeout, 2, 0, 1, 1)
 
-        self.clientLayout.addWidget(self.inputClientIP, 0, 1, 1, 1)
+        self.clientLayout.addWidget(self.cboxClientHosts, 0, 1, 1, 1)
         self.clientLayout.addWidget(self.inputClientPort, 1, 1, 1, 1)
         self.clientLayout.addWidget(self.inputClientTimeout, 2, 1, 1, 1)
         self.clientLayout.addWidget(self.inputClientCountSpam, 0, 3, 1, 1)

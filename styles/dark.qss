@@ -6,6 +6,24 @@
     background: #060122;
 }
 
+QComboBox {
+    background: #1f2b3a;
+    font: 15px;
+    border: 1px solid #3a5199;
+    border-radius: 5px;
+    height: 1em;
+    min-width: 5em;
+    max-width: 9em;
+    padding: 3 3px;
+}
+
+QComboBox QAbstractItemView {
+    border: 1px solid #3a5199;
+    border-radius: 5px;
+    background: #1f2b3a;
+    selection-background-color: #1f2b3a;
+}
+
 QSplitterHandle {
     background: #060122;
 }

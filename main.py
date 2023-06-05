@@ -1,7 +1,7 @@
 import sys
 import os.path
 
-from PyQt6.QtGui import QIcon, QTextOption
+from PyQt6.QtGui import QIcon, QTextOption, QCursor
 from PyQt6.QtWidgets import QApplication, QMainWindow, QFileDialog, QListWidgetItem
 from PyQt6.QtCore import QEvent, QThread, pyqtSignal, QObject
 
@@ -37,7 +37,11 @@ class MainWindow(QMainWindow):
             QIcon(resourcePath('images\\listen.png')))
 
         #  settings
-        self.ui.inputClientIP.setText(client.host)
+        self.ui.cboxClientHosts.addItems(client.host.split(","))
+        self.ui.cboxClientHosts.customContextMenuRequested.connect(self.rightClickCBoxClientIP)
+
+        self.ui.actionDeleteHost.triggered.connect(lambda: self.deleteClientHost())
+
         self.ui.inputClientPort.setText(str(client.port))
         self.ui.inputClientTimeout.setText(str(client.timeout))
         self.ui.inputClientCountSpam.setText(str(config.clientCountSpam))
@@ -83,7 +87,7 @@ class MainWindow(QMainWindow):
             self.ui.clientDockWidget, self.ui.actionClientShowHistory))
 
         self.ui.actionServerShowHistory.setChecked(config.serverHistory)
-        self.ui.actionServerShowHistory.triggered.connect(lambda:  self.showHistory(
+        self.ui.actionServerShowHistory.triggered.connect(lambda: self.showHistory(
             self.ui.serverDockWidget, self.ui.actionServerShowHistory))
 
         self.ui.actionWrapMode.triggered.connect(
@@ -156,6 +160,16 @@ class MainWindow(QMainWindow):
                 self.ui.clientDockWidget.setHidden(False)
             if self.ui.actionServerShowHistory.isChecked():
                 self.ui.serverDockWidget.setHidden(False)
+
+    def rightClickCBoxClientIP(self, event):
+        index = self.ui.cboxClientHosts.currentIndex()
+        if index != -1:
+            self.ui.menuCboxClientHosts.popup(QCursor.pos())
+
+    def deleteClientHost(self):
+        index = self.ui.cboxClientHosts.currentIndex()
+        if index != -1:
+            self.ui.cboxClientHosts.removeItem(index)
 
     def closeEvent(self, event) -> None:
         self.ui.settingsWindow.setValue('height', self.rect().height())
@@ -260,7 +274,8 @@ class MainWindow(QMainWindow):
         self.ui.statusBar.showMessage('History clear', 5000)
 
     def configSave(self):
-        config.clientIP = self.ui.inputClientIP.text()
+        client_hosts = [self.ui.cboxClientHosts.itemText(i) for i in range(self.ui.cboxClientHosts.count())]
+        config.clientIP = ",".join(client_hosts)
         config.clientPort = self.ui.inputClientPort.text()
         config.clientTimeOut = self.ui.inputClientTimeout.text()
         config.clientSpam = self.ui.checkClientSpam.isChecked()
@@ -330,7 +345,7 @@ class MainWindow(QMainWindow):
             if not self.ui.inputClientTimeout.text().isdigit():
                 self.ui.inputClientTimeout.setText('1')
             client.outMsg = self.ui.editorClientOutMessage.toPlainText()
-            client.host = self.ui.inputClientIP.text()
+            client.host = self.ui.cboxClientHosts.currentText()
             client.port = int(self.ui.inputClientPort.text())
             client.timeout = int(self.ui.inputClientTimeout.text())
             client.accNumber = self.ui.checkClientAccNumber.isChecked()
@@ -358,7 +373,7 @@ class MainWindow(QMainWindow):
                 timeMsg,
                 f'№{countMsg}, Sending: {tSendEnd:.5f}, Received: {tRecvEnd:.5f}'
             )
-        return f'Average time received {countMsg} messages: {tAllRecv/countMsg:.5f}'
+        return f'Average time received {countMsg} messages: {tAllRecv / countMsg:.5f}'
 
     def clientResultSending(self, timeMsg: str, result: str):
         if not client.inMsg:
@@ -423,7 +438,8 @@ class MainWindow(QMainWindow):
         self.ui.editorServerOutMessage.setReadOnly(False)
 
     def eventFilter(self, source: 'QObject', event: 'QEvent') -> bool:
-        if event.type() == QEvent.Type.ContextMenu and (source is self.ui.labelClientSendInfo) and (self.ui.labelClientSendInfo.text() != ''):
+        if event.type() == QEvent.Type.ContextMenu and (source is self.ui.labelClientSendInfo) and (
+                self.ui.labelClientSendInfo.text() != ''):
             if self.ui.menuClipboard.exec(event.globalPos()):
                 app.clipboard().setText(self.ui.labelClientSendInfo.text())
             return True
