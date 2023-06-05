@@ -5,7 +5,7 @@ class SysArgs():
 
     def __init__(self):
         DEFAULT_PORT = 6005
-        DEFAULT_TIMEOUT = 3
+        DEFAULT_TIMEOUT = 5
         DEFAULT_SPAM = 1
         DEFAULT_RANDOM = False
         DEFAULT_AN = False

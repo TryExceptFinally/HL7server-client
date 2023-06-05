@@ -51,11 +51,11 @@ class TcpSocket:
             else:
                 data = sock.recv(rbytes)
             return data
-        except OSError as exc:
-            print(f'[READ {sock}]: {exc}')
-            return b''
+        # except OSError as exc:
+        #     print(f'[READ {sock}]: {exc}')
+        #     return b''
         except (ConnectionResetError, ConnectionAbortedError,
-                AttributeError) as exc:
+                AttributeError, OSError) as exc:
             print(f'[READ {sock}]: {exc}')
             self.close(sock)
             return b''

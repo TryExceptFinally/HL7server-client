@@ -9,7 +9,7 @@ from time import perf_counter
 
 class ClientHL7(TcpSocket):
 
-    def __init__(self, host, port, timeout: int = 2, code='utf-8'):
+    def __init__(self, host, port, timeout, code='utf-8'):
         super().__init__(host, port, code)
         self.timeout = timeout
         self.random = False

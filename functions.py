@@ -29,13 +29,14 @@ def genAnswerMessage(msg: str, code: str, date: str, ack: str) -> str:
 
 def genSendingMessage(msg: str,
                       code: str,
-                      time_stamp: str = None,
+                      time_stamp: str = "",
                       acc_number: bool = False,
-                      cur_time: str = None) -> str:
+                      cur_time: str = "") -> str:
     result = transferToHL7(msg, code)
     if time_stamp or cur_time:
         try:
             result = parse(result)
+            time_stamp = time_stamp.replace(".", "_")
             order = str(result['ORC'][0][1]).upper()
             if order == 'SC':
                 if time_stamp:
@@ -52,6 +53,7 @@ def genSendingMessage(msg: str,
                 if time_stamp:
                     result['MSH'][0][10] = time_stamp
                     result['ORC'][0][2] = time_stamp
+                    result['OBR'][0][2] = time_stamp
                 if cur_time:
                     result['MSH'][0][7] = cur_time
                     result['OBR'][0][27][0][0][0] = cur_time
