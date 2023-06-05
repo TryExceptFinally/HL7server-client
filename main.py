@@ -1,6 +1,7 @@
 import sys
 import os.path
 
+from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QIcon, QTextOption, QCursor
 from PyQt6.QtWidgets import QApplication, QMainWindow, QFileDialog, QListWidgetItem
 from PyQt6.QtCore import QEvent, QThread, pyqtSignal, QObject
@@ -68,6 +69,7 @@ class MainWindow(QMainWindow):
             self.cursorPosition)
 
         self.ui.labelClientSendInfo.installEventFilter(self)
+        self.ui.cboxClientHosts.installEventFilter(self)
         # self.ui.labelClientSendInfo.setClickable(True)
         # self.ui.labelClientSendInfo.clicked.connect(lambda: print('12421'))
 
@@ -170,6 +172,8 @@ class MainWindow(QMainWindow):
         index = self.ui.cboxClientHosts.currentIndex()
         if index != -1:
             self.ui.cboxClientHosts.removeItem(index)
+            host = self.ui.cboxClientHosts.currentText()
+            self.ui.statusBar.showMessage(f"Host '{host}' deleted!", 5000)
 
     def closeEvent(self, event) -> None:
         self.ui.settingsWindow.setValue('height', self.rect().height())
@@ -439,10 +443,15 @@ class MainWindow(QMainWindow):
 
     def eventFilter(self, source: 'QObject', event: 'QEvent') -> bool:
         if event.type() == QEvent.Type.ContextMenu and (source is self.ui.labelClientSendInfo) and (
-                self.ui.labelClientSendInfo.text() != ''):
+                self.ui.labelClientSendInfo.text() != ""):
             if self.ui.menuClipboard.exec(event.globalPos()):
                 app.clipboard().setText(self.ui.labelClientSendInfo.text())
             return True
+        if event.type() == QEvent.Type.KeyPress and (source is self.ui.cboxClientHosts):
+            key = event.key()
+            host = self.ui.cboxClientHosts.currentText()
+            if ((key == Qt.Key.Key_Return) or (key == Qt.Key.Key_Enter)) and host != "":
+                self.ui.statusBar.showMessage(f"Host '{host}' added!", 5000)
         return super().eventFilter(source, event)
 
 
