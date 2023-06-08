@@ -136,7 +136,7 @@ class Ui_MainWindow:
         self.serverHistoryLayout.setContentsMargins(0, 1, 0, 0)
 
         # Labels
-        self.labelClientIP = QLabel('Address', self.tabClient)
+        self.labelClientIP = QLabel('Host', self.tabClient)
         self.labelClientIP.setObjectName('titleLabel')
         self.labelClientPort = QLabel('Port', self.tabClient)
         self.labelClientPort.setObjectName('titleLabel')
@@ -145,7 +145,7 @@ class Ui_MainWindow:
         self.labelClientSendInfo = QLabel(self.tabClient)
         self.labelClientSendInfo.setObjectName('statusLabel')
 
-        self.labelServerIP = QLabel('Address', self.tabServer)
+        self.labelServerIP = QLabel('Host', self.tabServer)
         self.labelServerIP.setObjectName('titleLabel')
         self.labelServerPort = QLabel('Port', self.tabServer)
         self.labelServerPort.setObjectName('titleLabel')
