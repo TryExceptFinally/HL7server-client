@@ -136,7 +136,7 @@ class Ui_MainWindow:
         self.serverHistoryLayout.setContentsMargins(0, 1, 0, 0)
 
         # Labels
-        self.labelClientIP = QLabel('IP', self.tabClient)
+        self.labelClientIP = QLabel('Address', self.tabClient)
         self.labelClientIP.setObjectName('titleLabel')
         self.labelClientPort = QLabel('Port', self.tabClient)
         self.labelClientPort.setObjectName('titleLabel')
@@ -145,7 +145,7 @@ class Ui_MainWindow:
         self.labelClientSendInfo = QLabel(self.tabClient)
         self.labelClientSendInfo.setObjectName('statusLabel')
 
-        self.labelServerIP = QLabel('IP', self.tabServer)
+        self.labelServerIP = QLabel('Address', self.tabServer)
         self.labelServerIP.setObjectName('titleLabel')
         self.labelServerPort = QLabel('Port', self.tabServer)
         self.labelServerPort.setObjectName('titleLabel')
@@ -157,7 +157,7 @@ class Ui_MainWindow:
 
         # self.inputClientIP = QLineEdit(self.tabClient)
         self.cboxClientHosts = QComboBox(self.tabClient, editable=True)
-        self.cboxClientHosts.setInsertPolicy(QComboBox.InsertPolicy.InsertAtTop)
+        self.cboxClientHosts.setInsertPolicy(QComboBox.InsertPolicy.NoInsert)
         self.cboxClientHosts.setMaxCount(10)
         self.cboxClientHosts.lineEdit().setMaxLength(30)
         self.cboxClientHosts.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)

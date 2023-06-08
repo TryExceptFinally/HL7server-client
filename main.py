@@ -38,12 +38,23 @@ class MainWindow(QMainWindow):
             QIcon(resourcePath('images\\listen.png')))
 
         #  settings
-        self.ui.cboxClientHosts.addItems(client.host.split(","))
-        self.ui.cboxClientHosts.customContextMenuRequested.connect(self.rightClickCBoxClientIP)
+
+        client_address = config.clientAddresses.split(",")
+        self.client_address = {}
+
+        for address in client_address:
+            address = address.split(":")
+            if len(address) == 2:
+                self.client_address[address[0]] = address[1]
+
+        self.ui.cboxClientHosts.addItems(self.client_address.keys())
+        self.ui.cboxClientHosts.customContextMenuRequested.connect(self.popupClientAddresses)
+        self.ui.cboxClientHosts.currentIndexChanged.connect(self.client_set_port_by_host)
+        self.ui.cboxClientHosts.setCurrentIndex(config.clientLastAddress)
+        self.client_set_port_by_host()
 
         self.ui.actionDeleteHost.triggered.connect(lambda: self.deleteClientHost())
 
-        self.ui.inputClientPort.setText(str(client.port))
         self.ui.inputClientTimeout.setText(str(client.timeout))
         self.ui.inputClientCountSpam.setText(str(config.clientCountSpam))
         self.ui.inputServerIP.setText(server.host)
@@ -70,6 +81,7 @@ class MainWindow(QMainWindow):
 
         self.ui.labelClientSendInfo.installEventFilter(self)
         self.ui.cboxClientHosts.installEventFilter(self)
+        self.ui.inputClientPort.installEventFilter(self)
         # self.ui.labelClientSendInfo.setClickable(True)
         # self.ui.labelClientSendInfo.clicked.connect(lambda: print('12421'))
 
@@ -163,16 +175,32 @@ class MainWindow(QMainWindow):
             if self.ui.actionServerShowHistory.isChecked():
                 self.ui.serverDockWidget.setHidden(False)
 
-    def rightClickCBoxClientIP(self, event):
+    def popupClientAddresses(self, event):
         index = self.ui.cboxClientHosts.currentIndex()
         if index != -1:
             self.ui.menuCboxClientHosts.popup(QCursor.pos())
 
+    def editorClientHost(self, host, port):
+        index = self.ui.cboxClientHosts.currentIndex()
+        _host = self.ui.cboxClientHosts.itemText(index)
+        if host in self.client_address.keys():
+            if host != _host:
+                return
+            if self.client_address[host] == port:
+                return
+            status = "changed"
+        else:
+            self.ui.cboxClientHosts.addItem(host)
+            status = "added"
+        self.client_address[host] = port
+        self.ui.statusBar.showMessage(f"Address '{host}:{port}' {status}!", 5000)
+
     def deleteClientHost(self):
         index = self.ui.cboxClientHosts.currentIndex()
         if index != -1:
-            self.ui.cboxClientHosts.removeItem(index)
             host = self.ui.cboxClientHosts.currentText()
+            self.ui.cboxClientHosts.removeItem(index)
+            self.client_address.pop(host)
             self.ui.statusBar.showMessage(f"Host '{host}' deleted!", 5000)
 
     def closeEvent(self, event) -> None:
@@ -272,15 +300,25 @@ class MainWindow(QMainWindow):
         if data.sendInfo:
             self.ui.labelClientSendInfo.setText(data.sendInfo)
 
+    def client_set_port_by_host(self):
+        index = self.ui.cboxClientHosts.currentIndex()
+        if index != -1:
+            host = self.ui.cboxClientHosts.itemText(index)
+            if host in self.client_address.keys():
+                self.ui.inputClientPort.setText(self.client_address[host])
+            else:
+                print("Incorrect HOST!")
+
     def clearItems(self, listHistory, buttonHistory):
         listHistory.clear()
         buttonHistory.setEnabled(False)
         self.ui.statusBar.showMessage('History clear', 5000)
 
     def configSave(self):
-        client_hosts = [self.ui.cboxClientHosts.itemText(i) for i in range(self.ui.cboxClientHosts.count())]
-        config.clientIP = ",".join(client_hosts)
-        config.clientPort = self.ui.inputClientPort.text()
+        config.clientAddresses = ""
+        for host, port in self.client_address.items():
+            config.clientAddresses += f"{host}:{port},"
+        config.clientLastAddress = self.ui.cboxClientHosts.currentIndex()
         config.clientTimeOut = self.ui.inputClientTimeout.text()
         config.clientSpam = self.ui.checkClientSpam.isChecked()
         config.clientCountSpam = self.ui.inputClientCountSpam.text()
@@ -347,7 +385,11 @@ class MainWindow(QMainWindow):
     def clientSendMessage(self):
         if not client.run:
             if not self.ui.inputClientTimeout.text().isdigit():
-                self.ui.inputClientTimeout.setText('1')
+                self.ui.statusBar.showMessage('Fill in the timeout!', 5000)
+                return
+            if not self.ui.inputClientPort.text().isdigit():
+                self.ui.statusBar.showMessage('Fill in the port!', 5000)
+                return
             client.outMsg = self.ui.editorClientOutMessage.toPlainText()
             client.host = self.ui.cboxClientHosts.currentText()
             client.port = int(self.ui.inputClientPort.text())
@@ -447,11 +489,14 @@ class MainWindow(QMainWindow):
             if self.ui.menuClipboard.exec(event.globalPos()):
                 app.clipboard().setText(self.ui.labelClientSendInfo.text())
             return True
-        if event.type() == QEvent.Type.KeyPress and (source is self.ui.cboxClientHosts):
+        if event.type() == QEvent.Type.KeyPress and (
+                (source is self.ui.cboxClientHosts) or (source is self.ui.inputClientPort)):
             key = event.key()
             host = self.ui.cboxClientHosts.currentText()
-            if ((key == Qt.Key.Key_Return) or (key == Qt.Key.Key_Enter)) and host != "":
-                self.ui.statusBar.showMessage(f"Host '{host}' added!", 5000)
+            port = self.ui.inputClientPort.text()
+            if ((key == Qt.Key.Key_Return) or (key == Qt.Key.Key_Enter)) and host != "" and port != "":
+
+                self.editorClientHost(host, port)
         return super().eventFilter(source, event)
 
 
@@ -492,7 +537,7 @@ if __name__ == '__main__':
     config = Config('config.ini')
     config.load()
 
-    client = ClientHL7(config.clientIP, config.clientPort,
+    client = ClientHL7('127.0.0.1', 6005,
                        config.clientTimeOut)
     server = ServerHL7('127.0.0.1', config.serverPort)
 

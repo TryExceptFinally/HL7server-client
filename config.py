@@ -6,8 +6,8 @@ class Config:
     def __init__(self, ini: str):
         self.ini = ini
         self.config = configparser.ConfigParser()
-        self.clientIP: str = '127.0.0.1'
-        self.clientPort: int = 6005
+        self.clientAddresses: str = '127.0.0.1:6005'
+        self.clientLastAddress: int = 0
         self.clientTimeOut: int = 3
         self.clientSpam: bool = False
         self.clientCountSpam: int = 0
@@ -43,8 +43,8 @@ class Config:
 
     def load(self):
         self.config.read(self.ini)
-        self.clientIP = self.getstring('Client', 'ip', fallback=self.clientIP)
-        self.clientPort = self.getint('Client', 'port', fallback=self.clientPort)
+        self.clientAddresses = self.getstring('Client', 'addresses', fallback=self.clientAddresses)
+        self.clientLastAddress = self.getint('Client', 'last_address', fallback=self.clientLastAddress)
         self.clientTimeOut = self.getint('Client', 'timeout', fallback=self.clientTimeOut)
         self.clientSpam = self.getboolean('Client', 'spam', fallback=self.clientSpam)
         self.clientCountSpam = self.getint('Client', 'count_spam', fallback=self.clientCountSpam)
@@ -61,8 +61,8 @@ class Config:
 
     def save(self):
         self.config['Client'] = {
-            'ip': self.clientIP,
-            'port': self.clientPort,
+            'addresses': self.clientAddresses,
+            'last_address': self.clientLastAddress,
             'timeout': self.clientTimeOut,
             'spam': self.clientSpam,
             'count_spam': self.clientCountSpam,
