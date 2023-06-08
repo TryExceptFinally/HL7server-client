@@ -198,7 +198,7 @@ class MainWindow(QMainWindow):
     def deleteClientHost(self):
         index = self.ui.cboxClientHosts.currentIndex()
         if index != -1:
-            host = self.ui.cboxClientHosts.currentText()
+            host = self.ui.cboxClientHosts.itemText(index)
             self.ui.cboxClientHosts.removeItem(index)
             self.client_address.pop(host)
             self.ui.statusBar.showMessage(f"Host '{host}' deleted!", 5000)
