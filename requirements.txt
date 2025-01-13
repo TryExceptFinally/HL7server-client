@@ -1,3 +1,4 @@
 hl7
 PyQt6
 pyinstaller_versionfile
+pyinstaller

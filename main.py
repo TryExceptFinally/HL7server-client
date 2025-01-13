@@ -21,21 +21,21 @@ class MainWindow(QMainWindow):
         # images
         self.setWindowIcon(QIcon(resourcePath('ico.ico')))
         self.ui.buttonClientSend.setIcon(
-            QIcon(resourcePath('images\\send.png')))
+            QIcon(resourcePath('images/send.png')))
         self.ui.buttonClientLoad.setIcon(
-            QIcon(resourcePath('images\\load.png')))
+            QIcon(resourcePath('images/load.png')))
         self.ui.buttonClientSave.setIcon(
-            QIcon(resourcePath('images\\save.png')))
+            QIcon(resourcePath('images/save.png')))
         self.ui.buttonClientClear.setIcon(
-            QIcon(resourcePath('images\\delete.png')))
+            QIcon(resourcePath('images/delete.png')))
         self.ui.buttonServerClear.setIcon(
-            QIcon(resourcePath('images\\delete.png')))
+            QIcon(resourcePath('images/delete.png')))
         self.ui.buttonClientHistoryClear.setIcon(
-            QIcon(resourcePath('images\\clear.png')))
+            QIcon(resourcePath('images/clear.png')))
         self.ui.buttonServerHistoryClear.setIcon(
-            QIcon(resourcePath('images\\clear.png')))
+            QIcon(resourcePath('images/clear.png')))
         self.ui.buttonServerListen.setIcon(
-            QIcon(resourcePath('images\\listen.png')))
+            QIcon(resourcePath('images/listen.png')))
 
         #  settings
 
@@ -204,6 +204,7 @@ class MainWindow(QMainWindow):
             self.ui.statusBar.showMessage(f"Host '{host}' deleted!", 5000)
 
     def closeEvent(self, event) -> None:
+        # TODO: Fix for linux
         self.ui.settingsWindow.setValue('height', self.rect().height())
         self.ui.settingsWindow.setValue('width', self.rect().width())
         self.configSave()
@@ -216,7 +217,7 @@ class MainWindow(QMainWindow):
                 self.ui.actionLightStyle.trigger()
 
     def setStyle(self, style):
-        stylesheet = resourcePath(f'styles\\{style}.qss')
+        stylesheet = resourcePath(f'styles/{style}.qss')
         with open(stylesheet, 'r') as ss:
             self.setStyleSheet(ss.read())
             # self.setStyleSheet('color: red;')

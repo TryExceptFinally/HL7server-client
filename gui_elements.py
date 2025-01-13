@@ -20,6 +20,7 @@ class Ui_MainWindow:
         root.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
         root.setMinimumSize(minWidth, minHeight)
 
+        # TODO: fix for linux
         self.getSettingsValues()
         rWidth = self.settingsWindow.value('width', minWidth)
         rHeight = self.settingsWindow.value('height', minHeight)

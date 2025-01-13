@@ -4,15 +4,15 @@
 block_cipher = None
 
 added_files = [
-    ('images\\ico.ico', '.'),
-    ('images\\send.png', 'images'),
-    ('images\\load.png', 'images'),
-    ('images\\save.png', 'images'),
-    ('images\\clear.png', 'images'),
-    ('images\\delete.png', 'images'),
-    ('images\\listen.png', 'images'),
-    ('styles\\dark.qss', 'styles'),
-    ('styles\\light.qss', 'styles')
+    ('images/ico.ico', '.'),
+    ('images/send.png', 'images'),
+    ('images/load.png', 'images'),
+    ('images/save.png', 'images'),
+    ('images/clear.png', 'images'),
+    ('images/delete.png', 'images'),
+    ('images/listen.png', 'images'),
+    ('styles/dark.qss', 'styles'),
+    ('styles/light.qss', 'styles')
     ]
 
 a = Analysis(
@@ -52,6 +52,6 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon='images\\ico.ico',
+    icon='images/ico.ico',
     version='version.txt'
 )
